@@ -10,8 +10,11 @@ import { BaseUrlInterceptor } from '../interceptors/base-url.interceptor';
 import { HeadersInterceptor } from '../interceptors/headers.interceptor';
 import { TokenInterceptor } from '../interceptors/token.interceptor';
 
+import { AppRoutingModule } from './app-routing.module';
+import { AuthLoggedOutGuard } from '../guards/auth-logged-out.guard.service';
 import { SharedModule } from '../shared/shared.module';
 import { LoginModule } from '../login/login.module';
+import { HomeModule } from '../home/home.module';
 
 import { AppComponent } from './app.component';
 
@@ -23,16 +26,19 @@ import { rootReducer, IAppState } from '../redux/store';
   ],
   imports: [
     BrowserModule,
-    SharedModule,
     NgbModule,
     NgReduxModule,
+    SharedModule,
+    AppRoutingModule,
+    HomeModule,
     LoginModule
   ],
   providers: [
     { provide: APP_BASE_URL, useValue: BASE_URL },
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    AuthLoggedOutGuard
   ],
   bootstrap: [AppComponent]
 })

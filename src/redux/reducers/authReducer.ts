@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { FluxStandardAction } from 'flux-standard-action';
-import { LoginActions } from '../../login/login.actions';
+import { AuthActions } from '../../login/login.actions';
 
 export interface IAuth {
   token: string
@@ -8,8 +8,11 @@ export interface IAuth {
 
 export const authReducer: Reducer<IAuth> = (state: IAuth = <IAuth>{}, action: FluxStandardAction<IAuth>) => {
   switch (action.type) {
-    case LoginActions.SET_TOKEN: {
+    case AuthActions.LOGIN: {
       return { ...state, token: action.payload.token };
+    }
+    case AuthActions.LOGOUT: {
+      return { ...state, token: null };
     }
     default: return state;
   }

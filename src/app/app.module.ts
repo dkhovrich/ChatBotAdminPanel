@@ -12,6 +12,7 @@ import { AuthLoggedOutGuard } from '../guards/auth-logged-out.guard.service';
 import { SharedModule } from '../shared/shared.module';
 import { LoginModule } from '../login/login.module';
 import { HomeModule } from '../home/home.module';
+import { ModalModule } from '../modal/modal.module';
 
 import { AppComponent } from './app.component';
 import { BaseSubscriptionComponent } from './app-base-subscription.component';
@@ -29,7 +30,8 @@ import { rootReducer, IAppState } from '../redux/store';
     SharedModule,
     AppRoutingModule,
     HomeModule,
-    LoginModule
+    LoginModule,
+    ModalModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },

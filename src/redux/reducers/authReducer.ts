@@ -9,10 +9,10 @@ export interface IAuth {
 export const authReducer: Reducer<IAuth> = (state: IAuth = <IAuth>{}, action: FluxStandardAction<IAuth>) => {
   switch (action.type) {
     case AuthActions.LOGIN: {
-      return { ...state, token: action.payload.token };
+      return { token: action.payload.token };
     }
     case AuthActions.LOGOUT: {
-      return { ...state, token: null };
+      return { token: null };
     }
     default: return state;
   }

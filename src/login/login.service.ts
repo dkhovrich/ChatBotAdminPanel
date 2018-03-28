@@ -16,7 +16,7 @@ export class LoginService extends BaseHttpService {
     return this.http.post<string>('acc_login', model)
       .pipe(
         map(res => res['Authorization']),
-        catchError(this.handleError)
+        catchError(this.handleError('acc_login'))
       );
   }
 }

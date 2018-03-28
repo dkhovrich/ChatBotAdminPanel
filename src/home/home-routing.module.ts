@@ -5,6 +5,7 @@ import { AppRoutes } from '../app/app-routes';
 import { AuthLoggedInGuard } from '../guards/auth-logged-in.guard.service';
 import { HomeComponent } from './home.component';
 import { GlossaryListComponent } from '../glossary/glossary-list/glossary-list.component';
+import { GlossaryListResolver } from '../glossary/glossary-list/glossary-list-resolver.service';
 
 const routes: Routes = [
   {
@@ -12,7 +13,13 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [AuthLoggedInGuard],
     children: [
-      { path: AppRoutes.Glossary, component: GlossaryListComponent }
+      {
+        path: AppRoutes.Glossary,
+        component: GlossaryListComponent,
+        resolve: {
+          data: GlossaryListResolver
+        }
+      }
     ]
   }
 ];

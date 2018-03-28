@@ -8,6 +8,7 @@ import { LoginModule } from '../login/login.module';
 import { GlossaryModule } from '../glossary/glossary.module';
 
 import { AuthActions } from '../login/login.actions';
+import { GlossaryService } from '../glossary/glossary.service';
 
 import { HomeComponent } from './home.component';
 
@@ -23,7 +24,8 @@ import { HomeComponent } from './home.component';
   exports: [HomeComponent],
   providers: [
     AuthLoggedInGuard,
-    AuthActions
+    AuthActions,
+    GlossaryService
   ]
 })
 export class HomeModule { }

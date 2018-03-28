@@ -1,17 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as urlJoin from 'url-join';
 
-import { APP_BASE_URL } from '../tokens';
+import { BASE_URL } from '../app/app-settings';
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
-  constructor(@Inject(APP_BASE_URL) private baseUrl: string) { }
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
-      url: urlJoin(this.baseUrl, req.url)
+      url: urlJoin(BASE_URL, req.url)
     });
 
     return next.handle(req);

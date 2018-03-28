@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgRedux, Selector } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators'
 
 import { BaseSubscriptionComponent } from '../../app/app-base-subscription.component';
 import { GlossaryActions } from '../glossary.actions';
 import { IAppState } from '../../redux/store';
+import { IGlossary } from '../../redux/reducers/glossaryReducer';
 import { IGlossaryModel } from '../glossary.models';
 
 @Component({
@@ -22,7 +24,10 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     private actions: GlossaryActions) {
     super();
 
-    const subscription: Subscription = ngRedux.select(data => data.glossary).subscribe(data => this.glossaries = data.items);
+    const subscription: Subscription = ngRedux.select(data => data.glossary)
+      .pipe(filter((data: IGlossary) => data && !!data.items))
+      .subscribe((data: IGlossary) => this.glossaries = data.items);
+
     this.addSubscription(subscription);
   }
 

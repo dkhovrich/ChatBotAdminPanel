@@ -1,1 +1,31 @@
-<h1>Glossary list</h1>
+<table class="table table-striped table-bordered table-hover table-sm">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Text</th>
+      <th scope="col">Settings</th>
+      <th scope="col">Related</th>
+      <th scope="col language-col">Language</th>
+      <th scope="col actions-col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let glossary of glossaries">
+      <td>{{ glossary.title }}</td>
+      <td>{{ glossary.text }}</td>
+      <td>{{ glossary.meta | glossaryMeta }}</td>
+      <td>{{ glossary.related_titles | arrayToString }}</td>
+      <td class="language-col">
+        <app-glossary-flag [language]="glossary.language"></app-glossary-flag>
+      </td>
+      <td class="actions-col">
+        <button type="button">
+          <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
+        </button>
+        <button type="button">
+          <span class="oi oi-trash" title="Remove" aria-hidden="true"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

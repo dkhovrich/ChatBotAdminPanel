@@ -9,6 +9,7 @@ import { GlossaryModule } from '../glossary/glossary.module';
 
 import { AuthActions } from '../login/login.actions';
 import { GlossaryService } from '../glossary/glossary.service';
+import { CacheService } from '../services/cache.service';
 
 import { HomeComponent } from './home.component';
 
@@ -25,7 +26,8 @@ import { HomeComponent } from './home.component';
   providers: [
     AuthLoggedInGuard,
     AuthActions,
-    GlossaryService
+    GlossaryService,
+    CacheService
   ]
 })
 export class HomeModule { }

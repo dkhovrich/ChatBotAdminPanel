@@ -14,12 +14,14 @@ import { LoginModule } from '../login/login.module';
 import { HomeModule } from '../home/home.module';
 
 import { AppComponent } from './app.component';
+import { BaseSubscriptionComponent } from './app-base-subscription.component';
 
 import { rootReducer, IAppState } from '../redux/store';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BaseSubscriptionComponent
   ],
   imports: [
     BrowserModule,

@@ -9,4 +9,10 @@ import { IGlossaryModel } from '../glossary.models'
 })
 export class GlossaryEditModalComponent implements IModalComponent {
   @Input() data: IGlossaryModel;
+
+  submitButtonText: string = 'Save!';
+  cancelButtonText: string = 'Cancel!';
+
+  submit(): void {
+  }
 }

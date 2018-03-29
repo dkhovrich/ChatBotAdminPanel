@@ -38,7 +38,7 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.route.data.subscribe(res => this.glossaryActions.load(res.data));
   }
 
-  show(glossary: IGlossaryModel): void {
+  edit(glossary: IGlossaryModel): void {
     this.modalActions.show(ModalComponentEnum.GlossaryEdit, glossary);
   }
 }

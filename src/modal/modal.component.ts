@@ -17,13 +17,18 @@ import { IModalComponent } from './modal.models';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent extends BaseSubscriptionComponent {
-  component?: ModalComponentEnum;
-  data: any;
-  view: ViewContainerRef;
   @ViewChild(ModalDirective) modalHost: ModalDirective;
+  componentType?: ModalComponentEnum;
+  componentData: any;
+  componentRef: ComponentRef<any>;
+  componentInstance: IModalComponent;
+  view: ViewContainerRef;
+
+  submitButtonText: string;
+  cancelButtonText: string;
 
   private get isVisible(): boolean {
-    return !!this.component;
+    return !!this.componentType;
   }
 
   constructor(
@@ -35,11 +40,12 @@ export class ModalComponent extends BaseSubscriptionComponent {
 
     const subscription: Subscription = this.ngRedux.select(data => data.modal)
       .subscribe(data => {
-        this.component = data.component;
-        this.data = data.data;
+        this.componentType = data.component;
+        this.componentData = data.data;
 
         if (this.isVisible) {
           this.loadComponent();
+          this.setModalData();
         }
       });
     this.addSubscription(subscription);
@@ -49,28 +55,46 @@ export class ModalComponent extends BaseSubscriptionComponent {
     return { 'visible': this.isVisible, 'hidden': !this.isVisible };
   }
 
+  submit(): void {
+    this.componentInstance.submit();
+  }
+
   close(): void {
     this.clear();
     this.actions.hide();
   }
 
   private loadComponent(): void {
-    const component: Type<any> = this.modalComponentFactoryService.create(this.component);
+    const component: Type<any> = this.modalComponentFactoryService.create(this.componentType);
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
 
     this.view = this.modalHost.viewContainerRef;
     this.view.clear();
 
-    const componentRef = this.view.createComponent(componentFactory);
-    (<IModalComponent>componentRef.instance).data = this.data;
+    this.componentRef = this.view.createComponent(componentFactory);
+    this.componentInstance = this.componentRef.instance as IModalComponent;
+    this.componentInstance.data = this.componentData;
+  }
+
+  private setModalData(): void {
+    const { submitButtonText, cancelButtonText } = this.componentInstance;
+    this.submitButtonText = submitButtonText;
+    this.cancelButtonText = cancelButtonText;
+  }
+
+  private clearModalData(): void {
+    this.submitButtonText = null;
+    this.cancelButtonText = null;
   }
 
   private clear(): void {
-    if (this.view) {
-      this.view.clear();
-    }
+    this.clearModalData();
 
-    this.component = null;
-    this.data = null;
+    this.componentType = null;
+    this.componentData = null;
+    this.componentInstance = null;
+
+    this.view.clear();
+    this.componentRef.destroy();
   }
 }

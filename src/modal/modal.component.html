@@ -11,8 +11,8 @@
         <ng-template app-modal></ng-template>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">{{submitButtonText}}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">{{cancelButtonText}}</button>
       </div>
     </div>
   </div>

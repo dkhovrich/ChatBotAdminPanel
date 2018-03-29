@@ -19,13 +19,18 @@ import { IModalComponent } from './modal.models';
 export class ModalComponent extends BaseSubscriptionComponent {
   @ViewChild(ModalDirective) modalHost: ModalDirective;
   componentType?: ModalComponentEnum;
-  componentData: any;
+  data: any;
   componentRef: ComponentRef<any>;
   componentInstance: IModalComponent;
   view: ViewContainerRef;
 
-  submitButtonText: string;
-  cancelButtonText: string;
+  get submitButtonText(): string {
+    return this.componentInstance ? this.componentInstance.submitButtonText : null;
+  }
+
+  get cancelButtonText(): string {
+    return this.componentInstance ? this.componentInstance.cancelButtonText : null;
+  }
 
   private get isVisible(): boolean {
     return !!this.componentType;
@@ -41,11 +46,10 @@ export class ModalComponent extends BaseSubscriptionComponent {
     const subscription: Subscription = this.ngRedux.select(data => data.modal)
       .subscribe(data => {
         this.componentType = data.component;
-        this.componentData = data.data;
+        this.data = data.data;
 
         if (this.isVisible) {
           this.loadComponent();
-          this.setModalData();
         }
       });
     this.addSubscription(subscription);
@@ -73,25 +77,11 @@ export class ModalComponent extends BaseSubscriptionComponent {
 
     this.componentRef = this.view.createComponent(componentFactory);
     this.componentInstance = this.componentRef.instance as IModalComponent;
-    this.componentInstance.data = this.componentData;
+    this.componentInstance.data = this.data;
   }
-
-  private setModalData(): void {
-    const { submitButtonText, cancelButtonText } = this.componentInstance;
-    this.submitButtonText = submitButtonText;
-    this.cancelButtonText = cancelButtonText;
-  }
-
-  private clearModalData(): void {
-    this.submitButtonText = null;
-    this.cancelButtonText = null;
-  }
-
   private clear(): void {
-    this.clearModalData();
-
     this.componentType = null;
-    this.componentData = null;
+    this.data = null;
     this.componentInstance = null;
 
     this.view.clear();

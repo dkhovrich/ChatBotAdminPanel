@@ -6,9 +6,11 @@ import { filter } from 'rxjs/operators'
 
 import { BaseSubscriptionComponent } from '../../app/app-base-subscription.component';
 import { GlossaryActions } from '../glossary.actions';
+import { ModalActions } from '../../modal/modal.actions';
 import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
 import { IGlossaryModel } from '../glossary.models';
+import { ModalComponentEnum } from '../../modal/modal-components.enum';
 
 @Component({
   selector: 'app-glossary-list',
@@ -21,7 +23,8 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private route: ActivatedRoute,
-    private actions: GlossaryActions) {
+    private glossaryActions: GlossaryActions,
+    private modalActions: ModalActions) {
     super();
 
     const subscription: Subscription = ngRedux.select(data => data.glossary)
@@ -32,6 +35,10 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(res => this.actions.load(res.data));
+    this.route.data.subscribe(res => this.glossaryActions.load(res.data));
+  }
+
+  show(glossary: IGlossaryModel): void {
+    this.modalActions.show(ModalComponentEnum.GlossaryEdit, glossary);
   }
 }

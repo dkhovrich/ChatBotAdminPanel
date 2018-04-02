@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 
 import { ModalDirective } from './modal.directive';
 import { ModalComponent } from './modal.component';
@@ -14,7 +14,7 @@ import { GlossaryEditModalComponent } from '../glossary/glossary-edit/glossary-e
     ModalComponent,
     GlossaryEditModalComponent,
   ],
-  imports: [CommonModule],
+  imports: [SharedModule],
   exports: [
     ModalComponent
   ],

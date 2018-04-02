@@ -1,3 +1,5 @@
+import { Language } from '../constants'
+
 export interface IGlossaryMetaModel {
   text: boolean;
   picture: boolean;
@@ -11,7 +13,7 @@ export interface IGlossaryModel {
   meta: IGlossaryMetaModel;
   related_titles: string[];
   keywords: string[];
-  language: string;
+  language: Language;
   picture: string;
   link: string;
 }

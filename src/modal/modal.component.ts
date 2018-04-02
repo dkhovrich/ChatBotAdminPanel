@@ -24,8 +24,16 @@ export class ModalComponent extends BaseSubscriptionComponent {
   componentInstance: IModalComponent;
   view: ViewContainerRef;
 
+  get title(): string {
+    return this.componentInstance ? this.componentInstance.title : null;
+  }
+
   get submitButtonText(): string {
     return this.componentInstance ? this.componentInstance.submitButtonText : null;
+  }
+
+  get isSubmitAvaliable(): boolean {
+    return this.componentInstance ? this.componentInstance.isSubmitAvaliable() : false;
   }
 
   get cancelButtonText(): string {
@@ -78,6 +86,7 @@ export class ModalComponent extends BaseSubscriptionComponent {
     this.componentRef = this.view.createComponent(componentFactory);
     this.componentInstance = this.componentRef.instance as IModalComponent;
     this.componentInstance.data = this.data;
+    this.componentInstance.init();
   }
   private clear(): void {
     this.componentType = null;

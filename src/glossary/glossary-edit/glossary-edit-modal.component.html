@@ -1,1 +1,56 @@
-<h1>{{data.title}}</h1>
+<form [formGroup]="form" class="container">
+  <div class="row form-group">
+    <div class="col-sm-3">
+      <label for="glossaryTitle" class="font-weight-bold align-middle">Title:</label>
+    </div>
+    <div class="col-sm-9">
+      <input id="glossaryTitle" type="text" class="form-control w-100" formControlName="title">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-3">
+      <label for="glossaryText" class="font-weight-bold align-middle">Text:</label>
+    </div>
+    <div class="col-sm-9">
+      <input id="glossaryText" type="text" class="form-control w-100" formControlName="text">
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-3">
+      <label class="font-weight-bold align-middle">Settings:</label>
+    </div>
+    <div class="col-sm-3">
+      <label for="glossaryMetaText">Text</label>
+      <input id="glossaryMetaText" type="checkbox" formControlName="metaText" />
+    </div>
+    <div class="col-sm-3">
+      <label for="glossaryMetaLink">Link</label>
+      <input id="glossaryMetaLink" type="checkbox" formControlName="metaLink" />
+    </div>
+    <div class="col-sm-3">
+      <label for="glossaryMetaPicture">Picture</label>
+      <input id="glossaryMetaPicture" type="checkbox" formControlName="metaPicture" />
+    </div>
+  </div>
+
+
+  <div class="row form-group">
+    <div class="col-sm-3">
+      <label for="glossaryPicture" class="font-weight-bold align-middle">Picture:</label>
+    </div>
+    <div class="col-sm-9">
+      <input id="glossaryPicture" type="text" class="form-control w-100" formControlName="picture">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-3">
+      <label for="glossaryLink" class="font-weight-bold align-middle">Link:</label>
+    </div>
+    <div class="col-sm-9">
+      <input id="glossaryLink" type="text" class="form-control w-100" formControlName="link">
+    </div>
+  </div>
+  <p>{{ form.value | json }}</p>
+  <p>{{ form.valid | json }}</p>
+</form>

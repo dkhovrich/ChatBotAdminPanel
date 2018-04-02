@@ -13,7 +13,7 @@ import { AppRoutes } from '../app/app-routes';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  form: FormGroup;
 
   constructor(
     private router: Router,
@@ -24,20 +24,20 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    const email: string = this.loginForm.get('email').value;
-    const password: string = this.loginForm.get('password').value;
+    const email: string = this.form.get('email').value;
+    const password: string = this.form.get('password').value;
 
     this.loginService.login(email, password)
       .subscribe(token => {
         this.authActions.login(token);
         this.loginCacheService.saveToken(token);
-        this.loginForm.reset();
+        this.form.reset();
         this.router.navigateByUrl(`${AppRoutes.Home}/${AppRoutes.Glossary}`);
       });
   }
 
   private createForm(): void {
-    this.loginForm = new FormGroup({
+    this.form = new FormGroup({
       email: new FormControl('e@mail.com', {
         validators: [Validators.required, Validators.email],
         updateOn: 'blur'

@@ -1,3 +1,4 @@
 export enum ModalComponentEnum {
-  GlossaryAddEdit = 'GlossaryAddEdit'
+  GlossaryAddEdit = 'GlossaryAddEdit',
+  GlossaryRemove = 'GlossaryRemove'
 };

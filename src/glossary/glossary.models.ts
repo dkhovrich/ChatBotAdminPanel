@@ -1,14 +1,17 @@
 import { Language } from '../constants'
 
+export interface IdModel {
+  id?: string;
+  uid?: string;
+}
+
 export interface IGlossaryMetaModel {
   text: boolean;
   picture: boolean;
   link: boolean;
 }
 
-export interface IGlossaryModel {
-  id?: string;
-  uid?: string;
+export interface IGlossaryModel extends IdModel {
   title: string;
   text: string;
   meta: IGlossaryMetaModel;

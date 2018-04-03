@@ -16,6 +16,8 @@ import { LinkRegex } from '../../constants'
   styleUrls: ['./glossary-add-edit-modal.component.scss']
 })
 export class GlossaryAddEditModalComponent implements IModalComponent {
+  private readonly updateTitleText: string = 'Edit glossary';
+  private readonly createTitleText: string = 'Create glossary';
   private readonly updateButtonText: string = 'Update';
   private readonly createButtonText: string = 'Create';
   private readonly updateToastrSuccessMessageText: string = 'Glossary successfully updated!';
@@ -23,7 +25,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
   isUpdateMode: boolean;
   data: IGlossaryModel;
-  title: string = 'Edit glossary'
+  title: string;
   submitButtonText: string;
   cancelButtonText: string = 'Cancel';
   toastrSuccessMessageText: string;
@@ -65,6 +67,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.isUpdateMode = !!this.data;
     this.submitButtonText = this.isUpdateMode ? this.updateButtonText : this.createButtonText;
     this.toastrSuccessMessageText = this.isUpdateMode ? this.updateToastrSuccessMessageText : this.createToastrSuccessMessageText;
+    this.title = this.isUpdateMode ? this.updateTitleText : this.createTitleText;
 
     if (this.data) {
       const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
@@ -87,7 +90,9 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.service.update(model)
       .subscribe((item: IGlossaryModel) => {
         this.glossaryActions.update(item);
-        this.toastrService.success(this.toastrSuccessMessageText);
+        this.toastrService.success(this.toastrSuccessMessageText, null, {
+          closeButton: true
+        });
         this.modalActions.hide();
       });
   }
@@ -98,7 +103,9 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.service.create(model)
       .subscribe((item: IGlossaryModel) => {
         this.glossaryActions.create(item);
-        this.toastrService.success(this.toastrSuccessMessageText);
+        this.toastrService.success(this.toastrSuccessMessageText, null, {
+          closeButton: true
+        });
         this.modalActions.hide();
       });
   }

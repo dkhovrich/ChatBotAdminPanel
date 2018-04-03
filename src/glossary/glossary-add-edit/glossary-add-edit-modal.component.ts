@@ -11,14 +11,14 @@ import { IGlossaryModel, IGlossaryMetaModel } from '../glossary.models'
 import { LinkRegex } from '../../constants'
 
 @Component({
-  selector: 'app-glossary-edit',
-  templateUrl: './glossary-edit-modal.component.html',
-  styleUrls: ['./glossary-edit-modal.component.scss']
+  templateUrl: './glossary-add-edit-modal.component.html',
+  styleUrls: ['./glossary-add-edit-modal.component.scss']
 })
-export class GlossaryEditModalComponent implements IModalComponent {
+export class GlossaryAddEditModalComponent implements IModalComponent {
+  isUpdateMode: boolean;
   data: IGlossaryModel;
   title: string = 'Edit glossary'
-  submitButtonText: string = 'Save';
+  submitButtonText: string;
   cancelButtonText: string = 'Cancel';
 
   form: FormGroup;
@@ -33,14 +33,14 @@ export class GlossaryEditModalComponent implements IModalComponent {
     };
 
     return {
-      id: this.data.id,
+      id: this.data ? this.data.id : null,
       title: model.title as string,
       text: model.text as string,
       picture: model.picture as string,
       link: model.link as string,
       meta: meta,
-      keywords: this.data.keywords,
-      related_titles: this.data.related_titles,
+      keywords: this.data ? this.data.keywords : [],
+      related_titles: this.data ? this.data.related_titles : [],
       language: Language.Russian
     }
   }
@@ -54,11 +54,24 @@ export class GlossaryEditModalComponent implements IModalComponent {
   }
 
   init(): void {
-    const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
-    this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture })
+    this.isUpdateMode = !!this.data;
+    this.submitButtonText = this.isUpdateMode ? 'Update' : 'Create';
+
+    if (this.data) {
+      const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
+      this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture })
+    }
   }
 
   submit(): void {
+    this.isUpdateMode ? this.update() : this.create();
+  }
+
+  isSubmitAvaliable(): boolean {
+    return this.form.valid;
+  }
+
+  private update(): void {
     const model: IGlossaryModel = this.prepareSaveGlossary;
     model.uid = this.data.uid;
 
@@ -69,16 +82,17 @@ export class GlossaryEditModalComponent implements IModalComponent {
       });
   }
 
-  isSubmitAvaliable(): boolean {
-    return this.form.valid;
+  private create(): void {
+    const model: IGlossaryModel = this.prepareSaveGlossary;
+    console.log(model);
   }
 
   private createForm(): any {
     this.form = this.fb.group({
       title: ['', Validators.required],
       text: ['', Validators.required],
-      picture: ['', Validators.required],
-      link: ['', Validators.required],
+      picture: '',
+      link: '',
       metaText: false,
       metaLink: false,
       metaPicture: false

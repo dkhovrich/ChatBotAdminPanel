@@ -6,13 +6,13 @@ import { ModalComponent } from './modal.component';
 import { ModalActions } from './modal.actions';
 import { ModalComponentFactoryService } from './modal-components.factory.service';
 
-import { GlossaryEditModalComponent } from '../glossary/glossary-edit/glossary-edit-modal.component';
+import { GlossaryAddEditModalComponent } from '../glossary/glossary-add-edit/glossary-add-edit-modal.component';
 
 @NgModule({
   declarations: [
     ModalDirective,
     ModalComponent,
-    GlossaryEditModalComponent,
+    GlossaryAddEditModalComponent,
   ],
   imports: [SharedModule],
   exports: [
@@ -22,6 +22,6 @@ import { GlossaryEditModalComponent } from '../glossary/glossary-edit/glossary-e
     ModalActions,
     ModalComponentFactoryService
   ],
-  entryComponents: [GlossaryEditModalComponent]
+  entryComponents: [GlossaryAddEditModalComponent]
 })
 export class ModalModule { }

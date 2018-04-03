@@ -1,3 +1,6 @@
+<div>
+  <button type="button" (click)="create()">Add</button>
+</div>
 <table class="table table-striped table-bordered table-hover table-sm">
   <thead class="table-primary">
     <tr>
@@ -19,7 +22,7 @@
         <app-glossary-flag [language]="glossary.language"></app-glossary-flag>
       </td>
       <td class="actions-col">
-        <button type="button" (click)="edit(glossary)">
+        <button type="button" (click)="update(glossary)">
           <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
         </button>
         <button type="button">

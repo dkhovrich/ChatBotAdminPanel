@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
@@ -15,11 +16,17 @@ import { LinkRegex } from '../../constants'
   styleUrls: ['./glossary-add-edit-modal.component.scss']
 })
 export class GlossaryAddEditModalComponent implements IModalComponent {
+  private readonly updateButtonText: string = 'Update';
+  private readonly createButtonText: string = 'Create';
+  private readonly updateToastrSuccessMessageText: string = 'Glossary successfully updated!';
+  private readonly createToastrSuccessMessageText: string = 'Glossary successfully created!';
+
   isUpdateMode: boolean;
   data: IGlossaryModel;
   title: string = 'Edit glossary'
   submitButtonText: string;
   cancelButtonText: string = 'Cancel';
+  toastrSuccessMessageText: string;
 
   form: FormGroup;
 
@@ -47,6 +54,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
   constructor(
     private fb: FormBuilder,
+    private toastrService: ToastrService,
     private service: GlossaryService,
     private glossaryActions: GlossaryActions,
     private modalActions: ModalActions) {
@@ -55,7 +63,8 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
   init(): void {
     this.isUpdateMode = !!this.data;
-    this.submitButtonText = this.isUpdateMode ? 'Update' : 'Create';
+    this.submitButtonText = this.isUpdateMode ? this.updateButtonText : this.createButtonText;
+    this.toastrSuccessMessageText = this.isUpdateMode ? this.updateToastrSuccessMessageText : this.createToastrSuccessMessageText;
 
     if (this.data) {
       const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
@@ -78,13 +87,20 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.service.update(model)
       .subscribe((item: IGlossaryModel) => {
         this.glossaryActions.update(item);
+        this.toastrService.success(this.toastrSuccessMessageText);
         this.modalActions.hide();
       });
   }
 
   private create(): void {
     const model: IGlossaryModel = this.prepareSaveGlossary;
-    console.log(model);
+
+    this.service.create(model)
+      .subscribe((item: IGlossaryModel) => {
+        this.glossaryActions.create(item);
+        this.toastrService.success(this.toastrSuccessMessageText);
+        this.modalActions.hide();
+      });
   }
 
   private createForm(): any {

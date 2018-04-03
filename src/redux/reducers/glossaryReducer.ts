@@ -21,7 +21,8 @@ export const glossaryReducer: Reducer<IGlossary> = (state: IGlossary = <IGlossar
       return { ...state, items };
     }
     case GlossaryActions.CREATE: {
-      return { ...state };
+      const item = action.payload as IGlossaryModel;
+      return { ...state, items: [item, ...state.items] };
     }
     case GlossaryActions.UPDATE: {
       const item = action.payload as IGlossaryModel;

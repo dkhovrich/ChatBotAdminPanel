@@ -22,7 +22,7 @@ export class GlossaryService extends BaseHttpService {
       );
   }
 
-  edit(model: IGlossaryModel): Observable<IGlossaryModel> {
+  update(model: IGlossaryModel): Observable<IGlossaryModel> {
     return this.http.post<IGlossaryModel>(this.updateUrl, model)
       .pipe(
         catchError(this.handleError<IGlossaryModel>(this.updateUrl))

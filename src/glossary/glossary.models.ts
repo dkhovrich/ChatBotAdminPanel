@@ -8,6 +8,7 @@ export interface IGlossaryMetaModel {
 
 export interface IGlossaryModel {
   id?: string;
+  uid?: string;
   title: string;
   text: string;
   meta: IGlossaryMetaModel;

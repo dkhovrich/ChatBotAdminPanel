@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { GlossaryService } from '../glossary.service';
+import { ModalActions } from '../../modal/modal.actions';
+import { GlossaryActions } from '../glossary.actions';
 
 import { Language } from '../../constants'
 import { IModalComponent } from '../../modal/modal.models';
@@ -43,7 +45,11 @@ export class GlossaryEditModalComponent implements IModalComponent {
     }
   }
 
-  constructor(private service: GlossaryService) {
+  constructor(
+    private fb: FormBuilder,
+    private service: GlossaryService,
+    private glossaryActions: GlossaryActions,
+    private modalActions: ModalActions) {
     this.createForm();
   }
 
@@ -54,7 +60,13 @@ export class GlossaryEditModalComponent implements IModalComponent {
 
   submit(): void {
     const model: IGlossaryModel = this.prepareSaveGlossary;
-    console.log(model);
+    model.uid = this.data.uid;
+
+    this.service.update(model)
+      .subscribe((item: IGlossaryModel) => {
+        this.glossaryActions.update(item);
+        this.modalActions.hide();
+      });
   }
 
   isSubmitAvaliable(): boolean {
@@ -62,14 +74,14 @@ export class GlossaryEditModalComponent implements IModalComponent {
   }
 
   private createForm(): any {
-    this.form = new FormGroup({
-      title: new FormControl('', Validators.required),
-      text: new FormControl('', Validators.required),
-      picture: new FormControl('', Validators.required),
-      link: new FormControl('', Validators.required),
-      metaText: new FormControl(false),
-      metaLink: new FormControl(false),
-      metaPicture: new FormControl(false)
-    })
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      text: ['', Validators.required],
+      picture: ['', Validators.required],
+      link: ['', Validators.required],
+      metaText: false,
+      metaLink: false,
+      metaPicture: false
+    });
   }
 }

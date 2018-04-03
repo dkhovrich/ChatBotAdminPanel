@@ -7,16 +7,18 @@ import { BaseHttpService } from '../services/base-http.service';
 
 @Injectable()
 export class LoginService extends BaseHttpService {
-  constructor(private http: HttpClient) {
-    super();
+  private readonly loginUrl: string = 'acc_login';
+
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   login(email: string, password: string): Observable<string> {
     const model = { email, password };
-    return this.http.post<string>('acc_login', model)
+    return this.http.post<string>(this.loginUrl, model)
       .pipe(
         map(res => res['Authorization']),
-        catchError(this.handleError('acc_login'))
+        catchError(this.handleError(this.loginUrl))
       );
   }
 }

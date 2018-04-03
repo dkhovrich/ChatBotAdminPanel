@@ -10,6 +10,7 @@ import { IGlossaryModel } from './/glossary.models';
 @Injectable()
 export class GlossaryActions extends BaseActionService {
   static LOAD: string = 'LOAD_GLOSSARY';
+  static CREATE: string = 'CREATE_GLOSSARY';
   static UPDATE: string = 'UPDATE_GLOSSARY';
 
   constructor(private ngRedux: NgRedux<IAppState>) {
@@ -18,6 +19,11 @@ export class GlossaryActions extends BaseActionService {
 
   load(items: IGlossaryModel[]): void {
     const action = this.createAction<IGlossary>(GlossaryActions.LOAD, { items });
+    this.ngRedux.dispatch(action);
+  }
+
+  create(item: IGlossaryModel): void {
+    const action = this.createAction<IGlossaryModel>(GlossaryActions.CREATE, item);
     this.ngRedux.dispatch(action);
   }
 

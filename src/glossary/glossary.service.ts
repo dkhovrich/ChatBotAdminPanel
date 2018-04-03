@@ -9,10 +9,11 @@ import { IGlossaryModel } from './glossary.models';
 @Injectable()
 export class GlossaryService extends BaseHttpService {
   private readonly getAllUrl: string = 'glossary_all';
+  private readonly createUrl: string = 'glossary_add';
   private readonly updateUrl: string = 'glossary_update';
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   getAll(): Observable<IGlossaryModel[]> {
@@ -22,10 +23,11 @@ export class GlossaryService extends BaseHttpService {
       );
   }
 
+  create(model: IGlossaryModel): Observable<IGlossaryModel> {
+    return this.post(this.createUrl, model);
+  }
+
   update(model: IGlossaryModel): Observable<IGlossaryModel> {
-    return this.http.post<IGlossaryModel>(this.updateUrl, model)
-      .pipe(
-        catchError(this.handleError<IGlossaryModel>(this.updateUrl))
-      );
+    return this.post(this.updateUrl, model);
   }
 }

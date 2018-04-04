@@ -3,11 +3,10 @@ import { IGlossaryMetaModel } from '../glossary.models'
 
 @Pipe({ name: 'glossaryMeta' })
 export class GlossaryMetaPipe implements PipeTransform {
-  transform(value: IGlossaryMetaModel): string {
+  transform(value: IGlossaryMetaModel): string[] {
     return Object.keys(value)
       .filter(key => value[key])
-      .map(key => this.firstLetterUpperCase(key))
-      .join(', ')
+      .map(key => this.firstLetterUpperCase(key));
   }
 
   private firstLetterUpperCase(value: string): string {

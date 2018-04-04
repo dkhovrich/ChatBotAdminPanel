@@ -6,7 +6,7 @@ import { ModalComponentEnum } from '../../modal/modal-components.enum';
 
 export interface IModal {
   component?: ModalComponentEnum;
-  data: any;
+  data?: any;
 }
 
 export const modalReducer: Reducer<IModal> = (state: IModal = <IModal>{}, action: FluxStandardAction<IModal>) => {

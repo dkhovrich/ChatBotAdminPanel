@@ -16,7 +16,7 @@ export class ModalActions extends BaseActionService {
     super();
   }
 
-  show(component: ModalComponentEnum, data: any): void {
+  show<T>(component: ModalComponentEnum, data: T = null): void {
     const action = this.createAction<IModal>(ModalActions.SHOW, { component, data });
     this.ngRedux.dispatch(action);
   }

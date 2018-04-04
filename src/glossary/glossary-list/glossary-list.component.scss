@@ -1,14 +1,19 @@
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
 .actions-col {
-  width: 100px;
+  width: 200px;
 }
 
 .language-col {
   width: 100px;
 }
 
-button {
-  background: none;
-  border: none;
-  outline: inherit;
-  cursor: pointer;
+table {
+  .label {
+    margin-right: 5px;
+  }
 }

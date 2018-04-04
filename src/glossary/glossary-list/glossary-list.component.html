@@ -17,14 +17,22 @@
   </thead>
   <tbody>
     <tr *ngFor="let glossary of glossaries">
-      <td>{{ glossary.title }}</td>
-      <td>{{ glossary.text }}</td>
-      <td>{{ glossary.meta | glossaryMeta }}</td>
-      <td>{{ glossary.related_titles | arrayToString }}</td>
-      <td class="language-col">
+      <td class="align-middle">{{ glossary.title }}</td>
+      <td class="align-middle">{{ glossary.text }}</td>
+      <td class="align-middle">
+        <span *ngFor="let meta of glossary.meta | glossaryMeta" class="badge badge-primary label">
+          {{meta}}
+        </span>
+      </td>
+      <td class="align-middle">
+        <span *ngFor="let related of glossary.related_titles" class="badge badge-primary label">
+          {{related}}
+        </span>
+      </td>
+      <td class="language-col align-middle">
         <app-glossary-flag [language]="glossary.language"></app-glossary-flag>
       </td>
-      <td class="actions-col">
+      <td class="actions-col align-middle">
         <button type="button" class="btn btn-primary btn-sm" (click)="update(glossary)">
           <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
           Update

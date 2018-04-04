@@ -5,7 +5,7 @@ import { FluxStandardAction } from 'flux-standard-action';
 import { BaseActionService } from '../services/base-action.service';
 import { IAppState } from '../redux/store';
 import { IGlossary } from '../redux/reducers/glossaryReducer';
-import { IdModel, IGlossaryModel } from './/glossary.models';
+import { IGlossaryModel } from './/glossary.models';
 
 @Injectable()
 export class GlossaryActions extends BaseActionService {
@@ -33,8 +33,8 @@ export class GlossaryActions extends BaseActionService {
     this.ngRedux.dispatch(action);
   }
 
-  remove(item: IdModel): void {
-    const action = this.createAction<IdModel>(GlossaryActions.REMOVE, item);
+  remove(item: IGlossaryModel): void {
+    const action = this.createAction<IGlossaryModel>(GlossaryActions.REMOVE, item);
     this.ngRedux.dispatch(action);
   }
 }

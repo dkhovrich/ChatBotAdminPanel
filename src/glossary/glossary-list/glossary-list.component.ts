@@ -9,7 +9,7 @@ import { GlossaryActions } from '../glossary.actions';
 import { ModalActions } from '../../modal/modal.actions';
 import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
-import { IdModel, IGlossaryModel } from '../glossary.models';
+import { IGlossaryModel } from '../glossary.models';
 import { ModalComponentEnum } from '../../modal/modal-components.enum';
 
 @Component({
@@ -47,6 +47,6 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   }
 
   remove(glossary: IGlossaryModel): void {
-    this.modalActions.show(ModalComponentEnum.GlossaryRemove, glossary as IdModel);
+    this.modalActions.show(ModalComponentEnum.GlossaryRemove, glossary);
   }
 }

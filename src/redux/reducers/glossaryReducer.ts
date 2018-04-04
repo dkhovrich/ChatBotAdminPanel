@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { FluxStandardAction } from 'flux-standard-action';
 import { GlossaryActions } from '../../glossary/glossary.actions';
-import { IdModel, IGlossaryModel } from '../../glossary/glossary.models';
+import { IGlossaryModel } from '../../glossary/glossary.models';
 
 export interface IGlossary {
   items?: IGlossaryModel[];
@@ -14,7 +14,7 @@ const updateGlossary = (items: IGlossaryModel[], glossary: IGlossaryModel) => {
   });
 }
 
-export const glossaryReducer: Reducer<IGlossary> = (state: IGlossary = <IGlossary>{}, action: FluxStandardAction<IGlossary | IGlossaryModel | IdModel>) => {
+export const glossaryReducer: Reducer<IGlossary> = (state: IGlossary = <IGlossary>{}, action: FluxStandardAction<IGlossary | IGlossaryModel>) => {
   switch (action.type) {
     case GlossaryActions.LOAD: {
       const items: IGlossaryModel[] = (action.payload as IGlossary).items;
@@ -32,7 +32,7 @@ export const glossaryReducer: Reducer<IGlossary> = (state: IGlossary = <IGlossar
       return { ...state, items };
     }
     case GlossaryActions.REMOVE: {
-      const item = action.payload as IdModel;
+      const item = action.payload as IGlossaryModel;
       const items: IGlossaryModel[] = state.items.filter(i => i.id !== item.id);
 
       return { ...state, items };

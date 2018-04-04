@@ -7,12 +7,18 @@ import { ModalActions } from './modal.actions';
 import { ModalComponentFactoryService } from './modal-components.factory.service';
 
 import { GlossaryAddEditModalComponent } from '../glossary/glossary-add-edit/glossary-add-edit-modal.component';
+import { GlossaryRemoveConfirmationModalComponent } from '../glossary/glossary-remove/glossary-remove-confirmation.component';
+
+const modalComponents = [
+  GlossaryAddEditModalComponent,
+  GlossaryRemoveConfirmationModalComponent
+];
 
 @NgModule({
   declarations: [
     ModalDirective,
     ModalComponent,
-    GlossaryAddEditModalComponent,
+    ...modalComponents
   ],
   imports: [SharedModule],
   exports: [
@@ -22,6 +28,6 @@ import { GlossaryAddEditModalComponent } from '../glossary/glossary-add-edit/glo
     ModalActions,
     ModalComponentFactoryService
   ],
-  entryComponents: [GlossaryAddEditModalComponent]
+  entryComponents: modalComponents
 })
 export class ModalModule { }

@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { LoginCacheService } from './login-cache.service';
 import { AuthActions } from './login.actions';
-import { IAppState } from "../redux/store";
+import { IAppState } from '../redux/store';
 import { AppRoutes } from '../app/app-routes';
 
 @Component({

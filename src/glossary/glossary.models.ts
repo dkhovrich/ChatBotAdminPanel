@@ -1,4 +1,4 @@
-import { Language } from '../constants'
+import { Language } from '../constants';
 
 export interface IGlossaryMetaModel {
   text: boolean;

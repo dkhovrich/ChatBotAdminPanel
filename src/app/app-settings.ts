@@ -1,1 +1,1 @@
-export const BASE_URL: string = 'https://iampm.site';
+export const BASE_URL = 'https://iampm.site';

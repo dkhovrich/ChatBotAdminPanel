@@ -6,10 +6,10 @@ import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
 
-import { Language } from '../../constants'
+import { Language } from '../../constants';
 import { IModalComponent } from '../../modal/modal.models';
-import { IGlossaryModel, IGlossaryMetaModel } from '../glossary.models'
-import { LinkRegex } from '../../constants'
+import { IGlossaryModel, IGlossaryMetaModel } from '../glossary.models';
+import { LinkRegex } from '../../constants';
 
 @Component({
   templateUrl: './glossary-add-edit-modal.component.html',
@@ -27,7 +27,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   data: IGlossaryModel;
   title: string;
   submitButtonText: string;
-  cancelButtonText: string = 'Cancel';
+  cancelButtonText = 'Cancel';
   toastrSuccessMessageText: string;
 
   form: FormGroup;
@@ -51,7 +51,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
       keywords: this.data ? this.data.keywords : [],
       related_titles: this.data ? this.data.related_titles : [],
       language: Language.Russian
-    }
+    };
   }
 
   constructor(
@@ -71,7 +71,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
     if (this.data) {
       const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
-      this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture })
+      this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture });
     }
   }
 

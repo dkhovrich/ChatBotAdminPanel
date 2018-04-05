@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -19,7 +20,7 @@ export abstract class BaseHttpService {
   protected handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
-      return Observable.of(result as T);
+      return of(result as T);
     };
   }
 }

@@ -9,10 +9,10 @@ import { IGlossaryModel } from './/glossary.models';
 
 @Injectable()
 export class GlossaryActions extends BaseActionService {
-  static LOAD: string = 'LOAD_GLOSSARY';
-  static CREATE: string = 'CREATE_GLOSSARY';
-  static UPDATE: string = 'UPDATE_GLOSSARY';
-  static REMOVE: string = 'REMOVE_GLOSSARY';
+  static LOAD = 'LOAD_GLOSSARY';
+  static CREATE = 'CREATE_GLOSSARY';
+  static UPDATE = 'UPDATE_GLOSSARY';
+  static REMOVE = 'REMOVE_GLOSSARY';
 
   constructor(private ngRedux: NgRedux<IAppState>) {
     super();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { GlossaryService } from '../glossary.service';
@@ -9,7 +9,7 @@ import { IGlossaryModel } from '../glossary.models';
 export class GlossaryListResolver implements Resolve<IGlossaryModel[]> {
   constructor(private glossaryService: GlossaryService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IGlossaryModel[] | Observable<IGlossaryModel[]> | Promise<IGlossaryModel[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IGlossaryModel[]> {
     return this.glossaryService.getAll();
   }
 }

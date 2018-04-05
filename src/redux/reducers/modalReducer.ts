@@ -19,4 +19,4 @@ export const modalReducer: Reducer<IModal> = (state: IModal = <IModal>{}, action
     }
     default: return state;
   }
-}
+};

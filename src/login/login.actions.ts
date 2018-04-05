@@ -8,8 +8,8 @@ import { IAuth } from '../redux/reducers/authReducer';
 
 @Injectable()
 export class AuthActions extends BaseActionService {
-  static LOGIN: string = 'LOGIN_ACTION';
-  static LOGOUT: string = 'LOGOUT_ACTION';
+  static LOGIN = 'LOGIN_ACTION';
+  static LOGOUT = 'LOGOUT_ACTION';
 
   constructor(private ngRedux: NgRedux<IAppState>) {
     super();

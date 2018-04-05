@@ -1,6 +1,6 @@
 import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 import { ModalActions } from './modal.actions';
 import { ModalDirective } from './modal.directive';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 interface ICacheData<T> {
-  data: T
+  data: T;
 }
 
 @Injectable()

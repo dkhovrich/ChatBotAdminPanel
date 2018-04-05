@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IGlossaryMetaModel } from '../glossary.models'
+import { IGlossaryMetaModel } from '../glossary.models';
 
 @Pipe({ name: 'glossaryMeta' })
 export class GlossaryMetaPipe implements PipeTransform {

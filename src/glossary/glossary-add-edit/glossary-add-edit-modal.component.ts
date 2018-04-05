@@ -8,7 +8,9 @@ import { GlossaryActions } from '../glossary.actions';
 
 import { Language } from '../../constants';
 import { IModalComponent } from '../../modal/modal.models';
-import { IGlossaryModel, IGlossaryMetaModel } from '../glossary.models';
+import { IGlossaryModel, IGlossaryMetaModel, GlossaryMetaModel } from '../glossary.models';
+import { ISelectModel } from '../../models/select.model';
+import { NgOption } from '@ng-select/ng-select';
 import { LinkRegex } from '../../constants';
 
 @Component({
@@ -29,30 +31,9 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   submitButtonText: string;
   cancelButtonText = 'Cancel';
   toastrSuccessMessageText: string;
+  settings: NgOption[];
 
   form: FormGroup;
-
-  private get prepareSaveGlossary(): IGlossaryModel {
-    const model = this.form.value;
-
-    const meta: IGlossaryMetaModel = {
-      text: model.metaText as boolean,
-      link: model.metaLink as boolean,
-      picture: model.metaPicture as boolean
-    };
-
-    return {
-      id: this.data ? this.data.id : null,
-      title: model.title as string,
-      text: model.text as string,
-      picture: model.picture as string,
-      link: model.link as string,
-      meta: meta,
-      keywords: this.data ? this.data.keywords : [],
-      related_titles: this.data ? this.data.related_titles : [],
-      language: Language.Russian
-    };
-  }
 
   constructor(
     private fb: FormBuilder,
@@ -61,6 +42,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     private glossaryActions: GlossaryActions,
     private modalActions: ModalActions) {
     this.createForm();
+    this.settings = this.prepareDefaultSettings();
   }
 
   init(): void {
@@ -70,8 +52,10 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.title = this.isUpdateMode ? this.updateTitleText : this.createTitleText;
 
     if (this.data) {
-      const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
-      this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture });
+      const { title, text, picture, link } = this.data;
+      const meta = this.getSelectedSettings();
+
+      this.form.setValue({ title, text, picture, link, meta });
     }
   }
 
@@ -84,7 +68,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   }
 
   private update(): void {
-    const model: IGlossaryModel = this.prepareSaveGlossary;
+    const model: IGlossaryModel = this.prepareSaveGlossary();
     model.uid = this.data.uid;
 
     this.service.update(model)
@@ -98,7 +82,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   }
 
   private create(): void {
-    const model: IGlossaryModel = this.prepareSaveGlossary;
+    const model: IGlossaryModel = this.prepareSaveGlossary();
 
     this.service.create(model)
       .subscribe((item: IGlossaryModel) => {
@@ -116,9 +100,39 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
       text: ['', Validators.required],
       picture: '',
       link: '',
-      metaText: false,
-      metaLink: false,
-      metaPicture: false
+      meta: []
     });
+  }
+
+  private prepareSaveGlossary(): IGlossaryModel {
+    const model = this.form.value;
+    const meta = this.prepareGlossaryMeta();
+
+    return {
+      id: this.data ? this.data.id : null,
+      title: model.title as string,
+      text: model.text as string,
+      picture: model.picture as string,
+      link: model.link as string,
+      meta: meta,
+      keywords: this.data ? this.data.keywords : [],
+      related_titles: this.data ? this.data.related_titles : [],
+      language: Language.Russian
+    };
+  }
+
+  private prepareDefaultSettings(): NgOption[] {
+    return Object.keys(new GlossaryMetaModel()).map(key => ({ label: key }));
+  }
+
+  private prepareGlossaryMeta(): IGlossaryMetaModel {
+    return (<NgOption>this.form.value.meta).reduce((result: IGlossaryMetaModel, item: NgOption) => {
+      result[item.label] = true;
+      return result;
+    }, new GlossaryMetaModel());
+  }
+
+  private getSelectedSettings(): NgOption[] {
+    return this.settings.filter(item => this.data.meta[item.label]);
   }
 }

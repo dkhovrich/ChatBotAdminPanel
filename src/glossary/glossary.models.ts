@@ -18,3 +18,9 @@ export interface IGlossaryModel {
   picture: string;
   link: string;
 }
+
+export class GlossaryMetaModel implements IGlossaryMetaModel {
+  text = false;
+  picture = false;
+  link = false;
+}

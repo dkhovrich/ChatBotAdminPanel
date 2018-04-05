@@ -5,11 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
+import { FirstLetterUpperCasePipe } from '../../shared/pipes/first-letter-uppercase.pipe';
 
 import { Language } from '../../constants';
 import { IModalComponent } from '../../modal/modal.models';
 import { IGlossaryModel, IGlossaryMetaModel, GlossaryMetaModel } from '../glossary.models';
-import { ISelectModel } from '../../models/select.model';
 import { NgOption } from '@ng-select/ng-select';
 import { LinkRegex } from '../../constants';
 
@@ -40,7 +40,8 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     private toastrService: ToastrService,
     private service: GlossaryService,
     private glossaryActions: GlossaryActions,
-    private modalActions: ModalActions) {
+    private modalActions: ModalActions,
+    private firstLetterUpperCasePipe: FirstLetterUpperCasePipe) {
     this.createForm();
     this.settings = this.prepareDefaultSettings();
   }
@@ -122,17 +123,21 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   }
 
   private prepareDefaultSettings(): NgOption[] {
-    return Object.keys(new GlossaryMetaModel()).map(key => ({ label: key }));
+    return Object.keys(new GlossaryMetaModel()).map(key => ({
+      label: this.firstLetterUpperCasePipe.transform(key)
+    }));
   }
 
   private prepareGlossaryMeta(): IGlossaryMetaModel {
-    return (<NgOption>this.form.value.meta).reduce((result: IGlossaryMetaModel, item: NgOption) => {
-      result[item.label] = true;
-      return result;
-    }, new GlossaryMetaModel());
+    return (<NgOption>this.form.value.meta)
+      .map((item: NgOption) => item.label.toLowerCase())
+      .reduce((result: IGlossaryMetaModel, label: string) => {
+        result[label] = true;
+        return result;
+      }, new GlossaryMetaModel());
   }
 
   private getSelectedSettings(): NgOption[] {
-    return this.settings.filter(item => this.data.meta[item.label]);
+    return this.settings.filter(item => this.data.meta[item.label.toLowerCase()]);
   }
 }

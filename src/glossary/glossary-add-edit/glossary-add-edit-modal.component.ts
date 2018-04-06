@@ -43,7 +43,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     private modalActions: ModalActions,
     private firstLetterUpperCasePipe: FirstLetterUpperCasePipe) {
     this.createForm();
-    this.settings = this.prepareDefaultSettings();
+    this.settings = this.prepareSettings();
   }
 
   init(): void {
@@ -122,7 +122,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     };
   }
 
-  private prepareDefaultSettings(): NgOption[] {
+  private prepareSettings(): NgOption[] {
     return Object.keys(new GlossaryMetaModel()).map(key => ({
       label: this.firstLetterUpperCasePipe.transform(key),
       value: key

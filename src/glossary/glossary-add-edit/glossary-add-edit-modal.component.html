@@ -17,19 +17,12 @@
   </div>
   <div class="row form-group">
     <div class="col-sm-3">
-      <label class="font-weight-bold align-middle">Settings:</label>
+      <label for="glossaryMeta" class="font-weight-bold align-middle">Settings:</label>
     </div>
-    <div class="col-sm-3">
-      <label for="glossaryMetaText">Text</label>
-      <input id="glossaryMetaText" type="checkbox" formControlName="metaText" />
-    </div>
-    <div class="col-sm-3">
-      <label for="glossaryMetaLink">Link</label>
-      <input id="glossaryMetaLink" type="checkbox" formControlName="metaLink" />
-    </div>
-    <div class="col-sm-3">
-      <label for="glossaryMetaPicture">Picture</label>
-      <input id="glossaryMetaPicture" type="checkbox" formControlName="metaPicture" />
+    <div class="col-sm-9">
+      <ng-select id="glossaryMeta" [selectOnTab]="true" [searchable]="false" [multiple]="true" [items]="settings" placeholder="Select settings"
+        formControlName="meta">
+      </ng-select>
     </div>
   </div>
   <div class="row form-group">

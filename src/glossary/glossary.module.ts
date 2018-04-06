@@ -8,6 +8,7 @@ import { GlossaryListComponent } from './glossary-list/glossary-list.component';
 import { GlossaryFlagComponent } from './glossary-flag/glossary-flag.component';
 
 import { GlossaryMetaPipe } from './glossary-list/glossary-meta.pipe';
+import { FirstLetterUpperCasePipe } from '../shared/pipes/first-letter-uppercase.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { GlossaryMetaPipe } from './glossary-list/glossary-meta.pipe';
   providers: [
     GlossaryService,
     GlossaryListResolver,
-    GlossaryActions
+    GlossaryActions,
+    FirstLetterUpperCasePipe
   ]
 })
 export class GlossaryModule { }

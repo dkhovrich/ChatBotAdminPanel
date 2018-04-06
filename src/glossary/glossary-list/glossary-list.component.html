@@ -21,7 +21,7 @@
       <td class="align-middle">{{ glossary.text }}</td>
       <td class="align-middle">
         <span *ngFor="let meta of glossary.meta | glossaryMeta" class="badge badge-primary label">
-          {{meta}}
+          {{meta | firstLetterUpperCase}}
         </span>
       </td>
       <td class="align-middle">

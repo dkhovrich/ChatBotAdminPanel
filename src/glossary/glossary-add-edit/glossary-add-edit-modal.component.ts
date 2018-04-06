@@ -124,20 +124,21 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
   private prepareDefaultSettings(): NgOption[] {
     return Object.keys(new GlossaryMetaModel()).map(key => ({
-      label: this.firstLetterUpperCasePipe.transform(key)
+      label: this.firstLetterUpperCasePipe.transform(key),
+      value: key
     }));
   }
 
   private prepareGlossaryMeta(): IGlossaryMetaModel {
     return (<NgOption>this.form.value.meta)
-      .map((item: NgOption) => item.label.toLowerCase())
-      .reduce((result: IGlossaryMetaModel, label: string) => {
-        result[label] = true;
+      .map((item: NgOption) => item.value)
+      .reduce((result: IGlossaryMetaModel, value: string) => {
+        result[value] = true;
         return result;
       }, new GlossaryMetaModel());
   }
 
   private getSelectedSettings(): NgOption[] {
-    return this.settings.filter(item => this.data.meta[item.label.toLowerCase()]);
+    return this.settings.filter(item => this.data.meta[(<string>item.value)]);
   }
 }

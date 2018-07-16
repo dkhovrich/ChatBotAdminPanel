@@ -5,7 +5,7 @@ import { FluxStandardAction } from 'flux-standard-action';
 import { BaseActionService } from '../services/base-action.service';
 import { IAppState } from '../redux/store';
 import { IGlossary } from '../redux/reducers/glossaryReducer';
-import { IGlossaryModel } from './/glossary.models';
+import { IGlossaryModel } from './glossary.models';
 
 @Injectable()
 export class GlossaryActions extends BaseActionService {

@@ -38,11 +38,11 @@ export class LoginComponent {
 
   private createForm(): void {
     this.form = new FormGroup({
-      email: new FormControl('e@mail.com', {
+      email: new FormControl('admin@admin.com', {
         validators: [Validators.required, Validators.email],
         updateOn: 'blur'
       }),
-      password: new FormControl('12345678', [Validators.required])
+      password: new FormControl('admin', [Validators.required])
     });
   }
 }

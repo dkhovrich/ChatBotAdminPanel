@@ -17,8 +17,7 @@ export class LoginService extends BaseHttpService {
     const model = { email, password };
     return this.http.post<string>(this.loginUrl, model)
       .pipe(
-        map(res => res['token']),
-        catchError(this.handleError(this.loginUrl))
+        map(res => res['token'])
       );
   }
 }

@@ -15,7 +15,7 @@ export abstract class BaseHttpService {
       );
   }
 
-  protected handleError<T>(operation = 'operation', result?: T) {
+  protected handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {
     return (error: any): Observable<T> => {
       console.error(error);
       return of(result as T);

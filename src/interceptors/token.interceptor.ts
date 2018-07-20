@@ -12,7 +12,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const token: string = this.ngRedux.getState().auth.token;
     if (token) {
       req = req.clone({
-        headers: req.headers.set('Authorization', token)
+        headers: req.headers.set('Authorization', `Bearer ${token}`)
       });
     }
 

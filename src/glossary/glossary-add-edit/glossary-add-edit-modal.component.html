@@ -12,33 +12,7 @@
       <label for="glossaryText" class="font-weight-bold align-middle">Text:</label>
     </div>
     <div class="col-sm-9">
-      <input id="glossaryText" type="text" class="form-control w-100" formControlName="text">
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-3">
-      <label for="glossaryMeta" class="font-weight-bold align-middle">Settings:</label>
-    </div>
-    <div class="col-sm-9">
-      <ng-select id="glossaryMeta" [selectOnTab]="true" [searchable]="false" [multiple]="true" [items]="settings" placeholder="Select settings"
-        formControlName="meta">
-      </ng-select>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-3">
-      <label for="glossaryPicture" class="font-weight-bold align-middle">Picture:</label>
-    </div>
-    <div class="col-sm-9">
-      <input id="glossaryPicture" type="text" placeholder="Optional" class="form-control w-100" formControlName="picture">
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-3">
-      <label for="glossaryLink" class="font-weight-bold align-middle">Link:</label>
-    </div>
-    <div class="col-sm-9">
-      <input id="glossaryLink" type="text" placeholder="Optional" class="form-control w-100" formControlName="link">
+      <textarea id="glossaryText" class="form-control w-100" formControlName="text"></textarea>
     </div>
   </div>
 </form>

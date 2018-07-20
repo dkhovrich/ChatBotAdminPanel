@@ -88,6 +88,7 @@ export class ModalComponent extends BaseSubscriptionComponent {
     this.componentInstance.data = this.data;
     this.componentInstance.init();
   }
+
   private clear(): void {
     this.componentType = null;
     this.data = null;

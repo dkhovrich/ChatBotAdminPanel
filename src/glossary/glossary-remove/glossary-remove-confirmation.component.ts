@@ -34,7 +34,7 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
   }
 
   submit(): void {
-    this.service.remove(this.data)
+    this.service.remove(this.data.id)
       .subscribe(() => {
         this.glossaryActions.remove(this.data);
         this.toastrService.success(this.toastrSuccessMessageText, null, {

@@ -16,7 +16,7 @@ import { DEFAULT_DEV_EMAIL } from '../app/app-settings';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  private submitted = false;
+  submitted = false;
   form: FormGroup;
 
   constructor(

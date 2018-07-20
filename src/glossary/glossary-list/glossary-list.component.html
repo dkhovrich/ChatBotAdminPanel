@@ -9,9 +9,6 @@
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Text</th>
-      <th scope="col">Settings</th>
-      <th scope="col">Related</th>
-      <th scope="col language-col">Language</th>
       <th scope="col actions-col"></th>
     </tr>
   </thead>
@@ -19,19 +16,6 @@
     <tr *ngFor="let glossary of glossaries">
       <td class="align-middle">{{ glossary.title }}</td>
       <td class="align-middle">{{ glossary.text }}</td>
-      <td class="align-middle">
-        <span *ngFor="let meta of glossary.meta | glossaryMeta" class="badge badge-primary label">
-          {{meta | firstLetterUpperCase}}
-        </span>
-      </td>
-      <td class="align-middle">
-        <span *ngFor="let related of glossary.related_titles" class="badge badge-primary label">
-          {{related}}
-        </span>
-      </td>
-      <td class="language-col align-middle">
-        <app-glossary-flag [language]="glossary.language"></app-glossary-flag>
-      </td>
       <td class="actions-col align-middle">
         <button type="button" class="btn btn-primary btn-sm" (click)="update(glossary)">
           <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>

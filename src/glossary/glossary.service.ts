@@ -8,36 +8,28 @@ import { IGlossaryModel } from './glossary.models';
 
 @Injectable()
 export class GlossaryService extends BaseHttpService {
-  private readonly getAllUrl: string = 'glossary_all';
-  private readonly createUrl: string = 'glossary_add';
-  private readonly updateUrl: string = 'glossary_update';
-  private readonly removeUrl: string = 'glossary_remove';
+  private readonly url: string = 'glossaries';
 
   constructor(http: HttpClient) {
     super(http);
   }
 
   getAll(): Observable<IGlossaryModel[]> {
-    return this.http.get<IGlossaryModel[]>(this.getAllUrl)
+    return this.http.get<IGlossaryModel[]>(this.url)
       .pipe(
-        catchError(this.handleError(this.getAllUrl, []))
+        catchError(this.handleError(this.url, []))
       );
   }
 
   create(model: IGlossaryModel): Observable<IGlossaryModel> {
-    return this.post(this.createUrl, model);
+    return this.http.post<IGlossaryModel>(this.url, model);
   }
 
-  update(model: IGlossaryModel): Observable<IGlossaryModel> {
-    return this.post(this.updateUrl, model);
+  update(id: string, model: IGlossaryModel): Observable<Object> {
+    return this.http.put(`${this.url}/${id}`, model, { responseType: 'text' });
   }
 
-  remove(model: IGlossaryModel): Observable<string> {
-    const { uid } = model;
-    return this.http.post<string>(this.removeUrl, { uid })
-      .pipe(
-        map(res => res['ok']),
-        catchError(this.handleError(this.removeUrl))
-      );
+  remove(id: string): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
   }
 }

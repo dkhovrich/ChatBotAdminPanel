@@ -7,12 +7,10 @@ import { GlossaryListResolver } from './glossary-list/glossary-list-resolver.ser
 import { GlossaryListComponent } from './glossary-list/glossary-list.component';
 import { GlossaryFlagComponent } from './glossary-flag/glossary-flag.component';
 
-import { GlossaryMetaPipe } from './glossary-list/glossary-meta.pipe';
 import { FirstLetterUpperCasePipe } from '../shared/pipes/first-letter-uppercase.pipe';
 
 @NgModule({
   declarations: [
-    GlossaryMetaPipe,
     GlossaryListComponent,
     GlossaryFlagComponent
   ],

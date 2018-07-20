@@ -6,14 +6,14 @@ import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
 
 import { IModalComponent } from '../../modal/modal.models';
-import { IdModel } from '../glossary.models'
+import { IGlossaryModel } from '../glossary.models';
 
 @Component({
   templateUrl: './glossary-remove-confirmation.component.html',
   styleUrls: ['./glossary-remove-confirmation.component.scss']
 })
 export class GlossaryRemoveConfirmationModalComponent implements IModalComponent {
-  data: IdModel;
+  data: IGlossaryModel;
   title: string;
   submitButtonText: string;
   cancelButtonText: string;
@@ -34,7 +34,7 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
   }
 
   submit(): void {
-    this.service.remove(this.data)
+    this.service.remove(this.data.id)
       .subscribe(() => {
         this.glossaryActions.remove(this.data);
         this.toastrService.success(this.toastrSuccessMessageText, null, {

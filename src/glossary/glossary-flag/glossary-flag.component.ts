@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Language } from '../../constants'
+import { Language } from '../../constants';
 
 @Component({
   selector: 'app-glossary-flag',
@@ -7,7 +7,7 @@ import { Language } from '../../constants'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlossaryFlagComponent {
-  @Input() language: Language
+  @Input() language: Language;
   className: string;
 
   getClassName(): object {

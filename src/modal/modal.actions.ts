@@ -9,8 +9,8 @@ import { ModalComponentEnum } from './modal-components.enum';
 
 @Injectable()
 export class ModalActions extends BaseActionService {
-  static SHOW: string = 'SHOW_ACTION';
-  static HIDE: string = 'HIDE_ACTION';
+  static SHOW = 'SHOW_ACTION';
+  static HIDE = 'HIDE_ACTION';
 
   constructor(private ngRedux: NgRedux<IAppState>) {
     super();

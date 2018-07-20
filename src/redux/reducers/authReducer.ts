@@ -3,7 +3,7 @@ import { FluxStandardAction } from 'flux-standard-action';
 import { AuthActions } from '../../login/login.actions';
 
 export interface IAuth {
-  token: string
+  token: string;
 }
 
 export const authReducer: Reducer<IAuth> = (state: IAuth = <IAuth>{}, action: FluxStandardAction<IAuth>) => {
@@ -16,4 +16,4 @@ export const authReducer: Reducer<IAuth> = (state: IAuth = <IAuth>{}, action: Fl
     }
     default: return state;
   }
-}
+};

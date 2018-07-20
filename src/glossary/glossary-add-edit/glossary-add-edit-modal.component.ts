@@ -6,10 +6,9 @@ import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
 
-import { Language } from '../../constants'
 import { IModalComponent } from '../../modal/modal.models';
-import { IGlossaryModel, IGlossaryMetaModel } from '../glossary.models'
-import { LinkRegex } from '../../constants'
+import { IGlossaryModel } from '../glossary.models';
+import { NgOption } from '@ng-select/ng-select';
 
 @Component({
   templateUrl: './glossary-add-edit-modal.component.html',
@@ -22,37 +21,19 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   private readonly createButtonText: string = 'Create';
   private readonly updateToastrSuccessMessageText: string = 'Glossary successfully updated!';
   private readonly createToastrSuccessMessageText: string = 'Glossary successfully created!';
+  private readonly updateToastrErrorMessageText: string = 'Error updating glossary!';
+  private readonly createToastrErrorMessageText: string = 'Error creating glossary!';
 
   isUpdateMode: boolean;
   data: IGlossaryModel;
   title: string;
   submitButtonText: string;
-  cancelButtonText: string = 'Cancel';
+  cancelButtonText = 'Cancel';
   toastrSuccessMessageText: string;
+  toastrErrorMessageText: string;
+  settings: NgOption[];
 
   form: FormGroup;
-
-  private get prepareSaveGlossary(): IGlossaryModel {
-    const model = this.form.value;
-
-    const meta: IGlossaryMetaModel = {
-      text: model.metaText as boolean,
-      link: model.metaLink as boolean,
-      picture: model.metaPicture as boolean
-    };
-
-    return {
-      id: this.data ? this.data.id : null,
-      title: model.title as string,
-      text: model.text as string,
-      picture: model.picture as string,
-      link: model.link as string,
-      meta: meta,
-      keywords: this.data ? this.data.keywords : [],
-      related_titles: this.data ? this.data.related_titles : [],
-      language: Language.Russian
-    }
-  }
 
   constructor(
     private fb: FormBuilder,
@@ -67,11 +48,12 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.isUpdateMode = !!this.data;
     this.submitButtonText = this.isUpdateMode ? this.updateButtonText : this.createButtonText;
     this.toastrSuccessMessageText = this.isUpdateMode ? this.updateToastrSuccessMessageText : this.createToastrSuccessMessageText;
+    this.toastrErrorMessageText = this.isUpdateMode ? this.updateToastrErrorMessageText : this.createToastrErrorMessageText;
     this.title = this.isUpdateMode ? this.updateTitleText : this.createTitleText;
 
     if (this.data) {
-      const { title, text, picture, link, meta: { text: metaText, link: metaLink, picture: metaPicture } } = this.data;
-      this.form.setValue({ title, text, picture, link, metaText, metaLink, metaPicture })
+      const { title, text } = this.data;
+      this.form.setValue({ title, text });
     }
   }
 
@@ -84,28 +66,29 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   }
 
   private update(): void {
-    const model: IGlossaryModel = this.prepareSaveGlossary;
-    model.uid = this.data.uid;
+    const model: IGlossaryModel = this.prepareSaveGlossary();
 
-    this.service.update(model)
-      .subscribe((item: IGlossaryModel) => {
-        this.glossaryActions.update(item);
-        this.toastrService.success(this.toastrSuccessMessageText, null, {
-          closeButton: true
-        });
+    this.service.update(model.id, model)
+      .subscribe(() => {
+        this.glossaryActions.update(model);
+        this.toastrService.success(this.toastrSuccessMessageText, null, { closeButton: true });
+        this.modalActions.hide();
+      }, () => {
+        this.toastrService.error(this.toastrErrorMessageText, null, { closeButton: true });
         this.modalActions.hide();
       });
   }
 
   private create(): void {
-    const model: IGlossaryModel = this.prepareSaveGlossary;
+    const model: IGlossaryModel = this.prepareSaveGlossary();
 
     this.service.create(model)
       .subscribe((item: IGlossaryModel) => {
         this.glossaryActions.create(item);
-        this.toastrService.success(this.toastrSuccessMessageText, null, {
-          closeButton: true
-        });
+        this.toastrService.success(this.toastrSuccessMessageText, null, { closeButton: true });
+        this.modalActions.hide();
+      }, () => {
+        this.toastrService.error(this.toastrErrorMessageText, null, { closeButton: true });
         this.modalActions.hide();
       });
   }
@@ -114,11 +97,16 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.form = this.fb.group({
       title: ['', Validators.required],
       text: ['', Validators.required],
-      picture: '',
-      link: '',
-      metaText: false,
-      metaLink: false,
-      metaPicture: false
     });
+  }
+
+  private prepareSaveGlossary(): IGlossaryModel {
+    const model = this.form.value;
+
+    return {
+      id: this.data ? this.data.id : null,
+      title: model.title as string,
+      text: model.text as string
+    };
   }
 }

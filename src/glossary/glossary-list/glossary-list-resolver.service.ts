@@ -9,7 +9,7 @@ import { IGlossaryModel } from '../glossary.models';
 export class GlossaryListResolver implements Resolve<IGlossaryModel[]> {
   constructor(private glossaryService: GlossaryService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IGlossaryModel[] | Observable<IGlossaryModel[]> | Promise<IGlossaryModel[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IGlossaryModel[]> {
     return this.glossaryService.getAll();
   }
 }

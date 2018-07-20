@@ -4,9 +4,9 @@ import { IGlossary, glossaryReducer } from './reducers/glossaryReducer';
 import { IModal, modalReducer } from './reducers/modalReducer';
 
 export interface IAppState {
-  auth?: IAuth,
-  glossary?: IGlossary,
-  modal?: IModal
+  auth?: IAuth;
+  glossary?: IGlossary;
+  modal?: IModal;
 }
 
 export const rootReducer = combineReducers({

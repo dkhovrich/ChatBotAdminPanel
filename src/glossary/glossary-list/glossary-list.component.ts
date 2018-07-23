@@ -11,6 +11,7 @@ import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
 import { IGlossaryModel } from '../glossary.models';
 import { ModalComponentEnum } from '../../modal/modal-components.enum';
+import { Language } from '../../constants';
 
 @Component({
   selector: 'app-glossary-list',
@@ -18,6 +19,7 @@ import { ModalComponentEnum } from '../../modal/modal-components.enum';
   styleUrls: ['./glossary-list.component.scss']
 })
 export class GlossaryListComponent extends BaseSubscriptionComponent implements OnInit {
+  language = Language;
   glossaries: IGlossaryModel[];
 
   constructor(

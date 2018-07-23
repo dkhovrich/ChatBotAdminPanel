@@ -4,7 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+import { FlagComponent } from './flag/flag.component';
 import { FirstLetterUpperCasePipe } from './pipes/first-letter-uppercase.pipe';
+
+const components = [FlagComponent];
 
 const modules = [
   CommonModule,
@@ -18,8 +21,8 @@ const pipes = [
 ];
 
 @NgModule({
-  declarations: pipes,
+  declarations: [...components, ...pipes],
   imports: [...modules],
-  exports: [...modules, ...pipes]
+  exports: [...modules, ...components, ...pipes]
 })
 export class SharedModule { }

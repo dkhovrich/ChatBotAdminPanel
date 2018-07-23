@@ -1,20 +1,21 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { NgOption } from '@ng-select/ng-select';
 
 import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
 
 import { IModalComponent } from '../../modal/modal.models';
-import { IGlossaryModel } from '../glossary.models';
-import { NgOption } from '@ng-select/ng-select';
+import { IGlossaryModel, GlossaryTitleModel } from '../glossary.models';
+import { Language } from '../../constants';
 
 @Component({
   templateUrl: './glossary-add-edit-modal.component.html',
   styleUrls: ['./glossary-add-edit-modal.component.scss']
 })
-export class GlossaryAddEditModalComponent implements IModalComponent {
+export class GlossaryAddEditModalComponent implements IModalComponent, AfterViewInit {
   private readonly updateTitleText: string = 'Edit glossary';
   private readonly createTitleText: string = 'Create glossary';
   private readonly updateButtonText: string = 'Update';
@@ -24,6 +25,9 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   private readonly updateToastrErrorMessageText: string = 'Error updating glossary!';
   private readonly createToastrErrorMessageText: string = 'Error creating glossary!';
 
+  @ViewChild('description') description: ElementRef;
+
+  language = Language;
   isUpdateMode: boolean;
   data: IGlossaryModel;
   title: string;
@@ -32,6 +36,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
   toastrSuccessMessageText: string;
   toastrErrorMessageText: string;
   settings: NgOption[];
+  textAreaHeight = 100;
 
   form: FormGroup;
 
@@ -44,6 +49,10 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.createForm();
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.textAreaHeight = this.description.nativeElement.scrollHeight);
+  }
+
   init(): void {
     this.isUpdateMode = !!this.data;
     this.submitButtonText = this.isUpdateMode ? this.updateButtonText : this.createButtonText;
@@ -52,8 +61,8 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
     this.title = this.isUpdateMode ? this.updateTitleText : this.createTitleText;
 
     if (this.data) {
-      const { title, text } = this.data;
-      this.form.setValue({ title, text });
+      const { title: { rus: titleRus, eng: titleEng }, description } = this.data;
+      this.form.setValue({ titleRus, titleEng, description });
     }
   }
 
@@ -95,9 +104,17 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
   private createForm(): any {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      text: ['', Validators.required],
-    });
+      titleRus: '',
+      titleEng: '',
+      description: ['', Validators.required],
+    }, {
+        validator: (group: FormGroup): ValidationErrors => {
+          const titleRus: string = group.controls.titleRus.value || '';
+          const titleEng: string = group.controls.titleEng.value || '';
+
+          return titleRus.length === 0 && titleEng.length === 0 ? { 'title': true } : null;
+        }
+      });
   }
 
   private prepareSaveGlossary(): IGlossaryModel {
@@ -105,8 +122,8 @@ export class GlossaryAddEditModalComponent implements IModalComponent {
 
     return {
       id: this.data ? this.data.id : null,
-      title: model.title as string,
-      text: model.text as string
+      title: new GlossaryTitleModel(model.titleRus, model.titleEng),
+      description: model.description as string
     };
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NgOption } from '@ng-select/ng-select';
 
@@ -36,7 +36,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent, AfterView
   toastrSuccessMessageText: string;
   toastrErrorMessageText: string;
   settings: NgOption[];
-  textAreaHeight = 5;
+  textAreaHeight = 100;
 
   form: FormGroup;
 
@@ -104,10 +104,17 @@ export class GlossaryAddEditModalComponent implements IModalComponent, AfterView
 
   private createForm(): any {
     this.form = this.fb.group({
-      titleRus: ['', Validators.required],
-      titleEng: ['', Validators.required],
+      titleRus: '',
+      titleEng: '',
       description: ['', Validators.required],
-    });
+    }, {
+        validator: (group: FormGroup): ValidationErrors => {
+          const titleRus: string = group.controls.titleRus.value || '';
+          const titleEng: string = group.controls.titleEng.value || '';
+
+          return titleRus.length === 0 && titleEng.length === 0 ? { 'title': true } : null;
+        }
+      });
   }
 
   private prepareSaveGlossary(): IGlossaryModel {

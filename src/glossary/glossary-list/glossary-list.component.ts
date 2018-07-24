@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { NgRedux, Selector } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
 import { filter, debounceTime } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   language = Language;
   glossaries: IGlossaryModel[];
   searchForm: FormGroup;
+  searchCriteriaControl: AbstractControl;
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
@@ -59,12 +60,22 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.modalActions.show(ModalComponentEnum.GlossaryRemove, glossary);
   }
 
+  isClearSearchButtonVisible(): boolean {
+    return this.searchCriteriaControl.value && this.searchCriteriaControl.value.length !== 0;
+  }
+
+  clearSearch(): void {
+    this.searchCriteriaControl.setValue('');
+  }
+
   private createSearchForm(): void {
     this.searchForm = this.fb.group({
       searchCriteria: ''
     });
 
-    this.searchForm.get('searchCriteria').valueChanges
+    this.searchCriteriaControl = this.searchForm.get('searchCriteria');
+
+    this.searchCriteriaControl.valueChanges
       .pipe(debounceTime(500))
       .subscribe(value => {
         const request = new GlossaryRequest(value);

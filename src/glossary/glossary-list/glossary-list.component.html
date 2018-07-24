@@ -1,6 +1,7 @@
 <nav class="navbar navbar-dark bg-light justify-content-end mb-2">
   <form [formGroup]="searchForm" class="form-inline mr-2">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" formControlName="searchCriteria">
+    <span *ngIf="isClearSearchButtonVisible()" class="oi oi-x clear-search" title="Clear" aria-hidden="true" (click)="clearSearch()"></span>
   </form>
   <button type="button" class="btn btn-primary" (click)="create()">
     <span class="oi oi-plus" title="Create" aria-hidden="true"></span>

@@ -1,6 +1,7 @@
 import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 import { ModalActions } from './modal.actions';
 import { ModalDirective } from './modal.directive';
@@ -23,6 +24,7 @@ export class ModalComponent extends BaseSubscriptionComponent {
   componentRef: ComponentRef<any>;
   componentInstance: IModalComponent;
   view: ViewContainerRef;
+  submitted = false;
 
   get title(): string {
     return this.componentInstance ? this.componentInstance.title : null;
@@ -40,6 +42,14 @@ export class ModalComponent extends BaseSubscriptionComponent {
     return this.componentInstance ? this.componentInstance.cancelButtonText : null;
   }
 
+  get toastrSuccessMessageText(): string {
+    return this.componentInstance ? this.componentInstance.toastrSuccessMessageText : null;
+  }
+
+  get toastrErrorMessageText(): string {
+    return this.componentInstance ? this.componentInstance.toastrErrorMessageText : null;
+  }
+
   private get isVisible(): boolean {
     return !!this.componentType;
   }
@@ -48,7 +58,8 @@ export class ModalComponent extends BaseSubscriptionComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngRedux: NgRedux<IAppState>,
     private actions: ModalActions,
-    private modalComponentFactoryService: ModalComponentFactoryService) {
+    private modalComponentFactoryService: ModalComponentFactoryService,
+    private toastrService: ToastrService) {
     super();
 
     const subscription: Subscription = this.ngRedux.select(data => data.modal)
@@ -68,7 +79,20 @@ export class ModalComponent extends BaseSubscriptionComponent {
   }
 
   submit(): void {
-    this.componentInstance.submit();
+    this.submitted = true;
+
+    this.componentInstance.submit()
+      .subscribe(() => {
+        this.toastrService.success(this.toastrSuccessMessageText, null, { closeButton: true });
+
+        this.submitted = false;
+        this.actions.hide();
+      }, () => {
+        this.toastrService.error(this.toastrErrorMessageText, null, { closeButton: true });
+
+        this.submitted = false;
+        this.actions.hide();
+      });
   }
 
   close(): void {

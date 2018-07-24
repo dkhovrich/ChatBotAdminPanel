@@ -12,6 +12,7 @@ import { ModalActions } from '../../modal/modal.actions';
 import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
 import { IGlossaryModel, GlossaryRequest } from '../glossary.models';
+import { IPagination } from '../../pagination/pagination.models';
 import { ModalComponentEnum } from '../../modal/modal-components.enum';
 import { Language } from '../../constants';
 
@@ -25,6 +26,7 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   glossaries: IGlossaryModel[];
   searchForm: FormGroup;
   searchCriteriaControl: AbstractControl;
+  page: IPagination<any> = { pageNumber: 5, pageSize: 10, total: 100, content: [] };
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
@@ -66,6 +68,10 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
   clearSearch(): void {
     this.searchCriteriaControl.setValue('');
+  }
+
+  onPageNumberChanged(pageNumber: number) {
+    console.log(pageNumber);
   }
 
   private createSearchForm(): void {

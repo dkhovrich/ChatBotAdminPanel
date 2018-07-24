@@ -1,0 +1,13 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-end">
+    <li class="page-item" [ngClass]="{'disabled': !isPreviousButtonEnabled}">
+      <a class="page-link" [attr.disabled]="!isPreviousButtonEnabled" (click)="goToPreviousPage()">Previous</a>
+    </li>
+    <li class="page-item">
+      <span class="page-link">{{data.pageNumber}}</span>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': !isNextButtonEnabled}">
+      <a class="page-link" [attr.disabled]="!isNextButtonEnabled" (click)="goToNextPage()">Next</a>
+    </li>
+  </ul>
+</nav>

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
+import { PaginationModule } from '../pagination/pagination.module';
+
 import { GlossaryService } from './glossary.service';
 import { GlossaryActions } from './glossary.actions';
 import { GlossaryListResolver } from './glossary-list/glossary-list-resolver.service';
@@ -14,6 +16,7 @@ import { FirstLetterUpperCasePipe } from '../shared/pipes/first-letter-uppercase
   ],
   imports: [
     SharedModule,
+    PaginationModule
   ],
   exports: [
     GlossaryListComponent

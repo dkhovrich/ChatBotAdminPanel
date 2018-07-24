@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
-import { NgRedux, Selector } from '@angular-redux/store';
+import { NgRedux } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
 import { filter, debounceTime } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ import { ModalActions } from '../../modal/modal.actions';
 import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
 import { IGlossaryModel, GlossaryRequest } from '../glossary.models';
+import { IPagination } from '../../pagination/pagination.models';
 import { ModalComponentEnum } from '../../modal/modal-components.enum';
 import { Language } from '../../constants';
 
@@ -22,12 +23,12 @@ import { Language } from '../../constants';
 })
 export class GlossaryListComponent extends BaseSubscriptionComponent implements OnInit {
   language = Language;
-  glossaries: IGlossaryModel[];
+  data: IPagination<IGlossaryModel>;
   searchForm: FormGroup;
   searchCriteriaControl: AbstractControl;
 
   constructor(
-    private ngRedux: NgRedux<IAppState>,
+    ngRedux: NgRedux<IAppState>,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private glossaryService: GlossaryService,
@@ -38,14 +39,14 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.createSearchForm();
 
     const subscription: Subscription = ngRedux.select(data => data.glossary)
-      .pipe(filter((data: IGlossary) => data && !!data.items))
-      .subscribe((data: IGlossary) => this.glossaries = data.items);
+      .pipe(filter((store: IGlossary) => store && store.data && !!store.data.content))
+      .subscribe((store: IGlossary) => this.data = store.data);
 
     this.addSubscription(subscription);
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(res => this.glossaryActions.save(res.data));
+    this.route.data.subscribe(res => this.glossaryActions.load(res.data));
   }
 
   create(): void {
@@ -68,6 +69,16 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.searchCriteriaControl.setValue('');
   }
 
+  onPageNumberChanged(pageNumber: number) {
+    this.data.pageNumber = pageNumber;
+    this.loadData();
+  }
+
+  private loadData(): void {
+    const request = new GlossaryRequest(this.searchCriteriaControl.value, this.data.pageNumber, this.data.pageSize);
+    this.glossaryService.get(request).subscribe(data => this.glossaryActions.load(data));
+  }
+
   private createSearchForm(): void {
     this.searchForm = this.fb.group({
       searchCriteria: ''
@@ -76,10 +87,6 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
     this.searchCriteriaControl.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(value => {
-        const request = new GlossaryRequest(value);
-        this.glossaryService.get(request)
-          .subscribe(data => this.glossaryActions.save(data));
-      });
+      .subscribe(this.loadData.bind(this));
   }
 }

@@ -1,12 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 
 export interface IBaseRequest {
-  searchCriteria: string;
+  searchCriteria?: string;
+  pageNumber?: number;
+  pageSize?: number;
   toHttpParams(): HttpParams;
 }
 
 export abstract class BaseRequest implements IBaseRequest {
-  constructor(public searchCriteria: string) { }
+  constructor(
+    public searchCriteria?: string,
+    public pageNumber?: number,
+    public pageSize?: number) { }
 
   toHttpParams(): HttpParams {
     let params = new HttpParams();

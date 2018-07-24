@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl: 'https://boiling-brushlands-26824.herokuapp.com/admin'
 };

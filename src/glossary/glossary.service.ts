@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { BaseHttpService } from '../services/base-http.service';
 import { IGlossaryModel } from './glossary.models';
+import { IBaseRequest } from '../models/request';
 
 @Injectable()
 export class GlossaryService extends BaseHttpService {
@@ -14,8 +15,8 @@ export class GlossaryService extends BaseHttpService {
     super(http);
   }
 
-  getAll(): Observable<IGlossaryModel[]> {
-    return this.http.get<IGlossaryModel[]>(this.url)
+  get(data: IBaseRequest): Observable<IGlossaryModel[]> {
+    return this.http.get<IGlossaryModel[]>(this.url, { params: data.toHttpParams() })
       .pipe(
         catchError(this.handleError(this.url, []))
       );

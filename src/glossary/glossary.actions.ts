@@ -18,7 +18,7 @@ export class GlossaryActions extends BaseActionService {
     super();
   }
 
-  load(items: IGlossaryModel[]): void {
+  save(items: IGlossaryModel[]): void {
     const action = this.createAction<IGlossary>(GlossaryActions.LOAD, { items });
     this.ngRedux.dispatch(action);
   }

@@ -18,6 +18,7 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
   submitButtonText: string;
   cancelButtonText: string;
   toastrSuccessMessageText: string;
+  glossaryTitle: string;
 
   constructor(
     private toastrService: ToastrService,
@@ -31,6 +32,7 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
     this.submitButtonText = 'Remove';
     this.cancelButtonText = 'Cancel';
     this.toastrSuccessMessageText = 'Glossary successfully removed!';
+    this.glossaryTitle = this.getGlossaryTitle();
   }
 
   submit(): void {
@@ -46,5 +48,18 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
 
   isSubmitAvaliable(): boolean {
     return true;
+  }
+
+  private getGlossaryTitle(): string {
+    const isExists = str => typeof str === 'string' && str.length !== 0;
+    const { rus, eng } = this.data.title;
+
+    if (isExists(rus) && isExists(eng)) {
+      return `${rus} / ${eng}`;
+    } else if (isExists(rus)) {
+      return rus;
+    } else if (isExists(eng)) {
+      return eng;
+    }
   }
 }

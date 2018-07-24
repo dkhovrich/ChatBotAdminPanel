@@ -2,11 +2,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Language } from '../../constants';
 
 @Component({
-  selector: 'app-glossary-flag',
-  templateUrl: './glossary-flag.component.html',
+  selector: 'app-flag',
+  templateUrl: './flag.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlossaryFlagComponent {
+export class FlagComponent {
   @Input() language: Language;
   className: string;
 

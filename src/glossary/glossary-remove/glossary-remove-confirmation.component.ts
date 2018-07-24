@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { GlossaryService } from '../glossary.service';
-import { ModalActions } from '../../modal/modal.actions';
 import { GlossaryActions } from '../glossary.actions';
 
 import { IModalComponent } from '../../modal/modal.models';
@@ -18,13 +18,12 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
   submitButtonText: string;
   cancelButtonText: string;
   toastrSuccessMessageText: string;
+  toastrErrorMessageText: string;
   glossaryTitle: string;
 
   constructor(
-    private toastrService: ToastrService,
     private service: GlossaryService,
-    private glossaryActions: GlossaryActions,
-    private modalActions: ModalActions) {
+    private glossaryActions: GlossaryActions) {
   }
 
   init(): void {
@@ -32,18 +31,15 @@ export class GlossaryRemoveConfirmationModalComponent implements IModalComponent
     this.submitButtonText = 'Remove';
     this.cancelButtonText = 'Cancel';
     this.toastrSuccessMessageText = 'Glossary successfully removed!';
+    this.toastrErrorMessageText = 'Error removing glossary!';
     this.glossaryTitle = this.getGlossaryTitle();
   }
 
-  submit(): void {
-    this.service.remove(this.data.id)
-      .subscribe(() => {
-        this.glossaryActions.remove(this.data);
-        this.toastrService.success(this.toastrSuccessMessageText, null, {
-          closeButton: true
-        });
-        this.modalActions.hide();
-      });
+  submit(): Observable<any> {
+    return this.service.remove(this.data.id)
+      .pipe(
+        tap(() => this.glossaryActions.remove(this.data))
+      );
   }
 
   isSubmitAvaliable(): boolean {

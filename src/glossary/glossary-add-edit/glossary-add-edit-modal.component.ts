@@ -50,7 +50,7 @@ export class GlossaryAddEditModalComponent implements IModalComponent, AfterView
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.textAreaHeight = this.description.nativeElement.scrollHeight);
+    setTimeout(this.expandTextArea.bind(this));
   }
 
   init(): void {
@@ -125,5 +125,9 @@ export class GlossaryAddEditModalComponent implements IModalComponent, AfterView
       title: new GlossaryTitleModel(model.titleRus, model.titleEng),
       description: model.description as string
     };
+  }
+
+  private expandTextArea(): void {
+    this.textAreaHeight = this.description.nativeElement.scrollHeight;
   }
 }

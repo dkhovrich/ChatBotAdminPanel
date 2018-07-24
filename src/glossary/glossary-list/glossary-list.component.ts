@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgRedux, Selector } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, debounceTime } from 'rxjs/operators';
 
 import { BaseSubscriptionComponent } from '../../app/app-base-subscription.component';
 import { GlossaryActions } from '../glossary.actions';
+import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
 import { IAppState } from '../../redux/store';
 import { IGlossary } from '../../redux/reducers/glossaryReducer';
-import { IGlossaryModel } from '../glossary.models';
+import { IGlossaryModel, GlossaryRequest } from '../glossary.models';
 import { ModalComponentEnum } from '../../modal/modal-components.enum';
 import { Language } from '../../constants';
 
@@ -21,13 +23,18 @@ import { Language } from '../../constants';
 export class GlossaryListComponent extends BaseSubscriptionComponent implements OnInit {
   language = Language;
   glossaries: IGlossaryModel[];
+  searchForm: FormGroup;
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
+    private glossaryService: GlossaryService,
     private glossaryActions: GlossaryActions,
     private modalActions: ModalActions) {
     super();
+
+    this.createSearchForm();
 
     const subscription: Subscription = ngRedux.select(data => data.glossary)
       .pipe(filter((data: IGlossary) => data && !!data.items))
@@ -37,7 +44,7 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(res => this.glossaryActions.load(res.data));
+    this.route.data.subscribe(res => this.glossaryActions.save(res.data));
   }
 
   create(): void {
@@ -50,5 +57,19 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
   remove(glossary: IGlossaryModel): void {
     this.modalActions.show(ModalComponentEnum.GlossaryRemove, glossary);
+  }
+
+  private createSearchForm(): void {
+    this.searchForm = this.fb.group({
+      searchCriteria: ''
+    });
+
+    this.searchForm.get('searchCriteria').valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(value => {
+        const request = new GlossaryRequest(value);
+        this.glossaryService.get(request)
+          .subscribe(data => this.glossaryActions.save(data));
+      });
   }
 }

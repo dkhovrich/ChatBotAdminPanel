@@ -3,13 +3,13 @@ import { Observable } from 'rxjs';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { GlossaryService } from '../glossary.service';
-import { IGlossaryModel } from '../glossary.models';
+import { IGlossaryModel, GlossaryRequest } from '../glossary.models';
 
 @Injectable()
 export class GlossaryListResolver implements Resolve<IGlossaryModel[]> {
   constructor(private glossaryService: GlossaryService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IGlossaryModel[]> {
-    return this.glossaryService.getAll();
+    return this.glossaryService.get(new GlossaryRequest(null));
   }
 }

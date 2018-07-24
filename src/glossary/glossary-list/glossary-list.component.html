@@ -1,9 +1,12 @@
-<div class="add-button-container">
+<nav class="navbar navbar-dark bg-light justify-content-end mb-2">
+  <form [formGroup]="searchForm" class="form-inline mr-2">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" formControlName="searchCriteria">
+  </form>
   <button type="button" class="btn btn-primary" (click)="create()">
     <span class="oi oi-plus" title="Create" aria-hidden="true"></span>
     Create
   </button>
-</div>
+</nav>
 <table class="table table-striped table-bordered table-hover table-sm">
   <thead class="table-primary">
     <tr>
@@ -33,14 +36,16 @@
       </td>
       <td class="align-middle">{{ glossary.description }}</td>
       <td class="actions-col align-middle">
-        <button type="button" class="btn btn-primary btn-sm" (click)="update(glossary)">
-          <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
-          Update
-        </button>
-        <button type="button" class="btn btn-danger btn-sm" (click)="remove(glossary)">
-          <span class="oi oi-trash" title="Remove" aria-hidden="true"></span>
-          Delete
-        </button>
+        <div class="d-flex justify-content-around">
+          <button type="button" class="btn btn-primary btn-sm" (click)="update(glossary)">
+            <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
+            Update
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="remove(glossary)">
+            <span class="oi oi-trash" title="Remove" aria-hidden="true"></span>
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>

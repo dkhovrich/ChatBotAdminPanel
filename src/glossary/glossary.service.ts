@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 
 import { BaseHttpService } from '../services/base-http.service';
 import { IPagination } from '../pagination/pagination.models';
-import { IGlossaryModel } from './glossary.models';
+import { IGlossaryModel, GlossaryRequest } from './glossary.models';
 import { IBaseRequest } from '../models/request';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class GlossaryService extends BaseHttpService {
     super(http);
   }
 
-  get(data: IBaseRequest): Observable<IPagination<IGlossaryModel>> {
+  get(data: IBaseRequest = new GlossaryRequest()): Observable<IPagination<IGlossaryModel>> {
     return this.http.get<IPagination<IGlossaryModel>>(this.url, { params: data.toHttpParams() })
       .pipe(
         catchError(this.handleError(this.url, null))

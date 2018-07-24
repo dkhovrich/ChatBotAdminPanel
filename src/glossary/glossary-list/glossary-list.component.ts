@@ -76,8 +76,7 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
   private loadData(): void {
     const request = new GlossaryRequest(this.searchCriteriaControl.value, this.data.pageNumber, this.data.pageSize);
-    this.glossaryService.get(request)
-      .subscribe(data => this.glossaryActions.load(data));
+    this.glossaryService.get(request).subscribe(data => this.glossaryActions.load(data));
   }
 
   private createSearchForm(): void {
@@ -88,6 +87,6 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
     this.searchCriteriaControl.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(() => this.loadData());
+      .subscribe(this.loadData.bind(this));
   }
 }

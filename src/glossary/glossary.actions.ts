@@ -6,6 +6,7 @@ import { BaseActionService } from '../services/base-action.service';
 import { IAppState } from '../redux/store';
 import { IGlossary } from '../redux/reducers/glossaryReducer';
 import { IGlossaryModel } from './glossary.models';
+import { IPagination } from '../pagination/pagination.models';
 
 @Injectable()
 export class GlossaryActions extends BaseActionService {
@@ -18,8 +19,8 @@ export class GlossaryActions extends BaseActionService {
     super();
   }
 
-  save(items: IGlossaryModel[]): void {
-    const action = this.createAction<IGlossary>(GlossaryActions.LOAD, { items });
+  load(data: IPagination<IGlossaryModel>): void {
+    const action = this.createAction<IGlossary>(GlossaryActions.LOAD, { data });
     this.ngRedux.dispatch(action);
   }
 

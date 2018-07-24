@@ -2,6 +2,8 @@ import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NgOption } from '@ng-select/ng-select';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { GlossaryService } from '../glossary.service';
 import { ModalActions } from '../../modal/modal.actions';
@@ -66,40 +68,28 @@ export class GlossaryAddEditModalComponent implements IModalComponent, AfterView
     }
   }
 
-  submit(): void {
-    this.isUpdateMode ? this.update() : this.create();
+  submit(): Observable<any> {
+    return this.isUpdateMode ? this.update() : this.create();
   }
 
   isSubmitAvaliable(): boolean {
     return this.form.valid;
   }
 
-  private update(): void {
+  private update(): Observable<any> {
     const model: IGlossaryModel = this.prepareSaveGlossary();
-
-    this.service.update(model.id, model)
-      .subscribe(() => {
-        this.glossaryActions.update(model);
-        this.toastrService.success(this.toastrSuccessMessageText, null, { closeButton: true });
-        this.modalActions.hide();
-      }, () => {
-        this.toastrService.error(this.toastrErrorMessageText, null, { closeButton: true });
-        this.modalActions.hide();
-      });
+    return this.service.update(model.id, model)
+      .pipe(
+        tap(() => this.glossaryActions.update(model))
+      );
   }
 
-  private create(): void {
+  private create(): Observable<any> {
     const model: IGlossaryModel = this.prepareSaveGlossary();
-
-    this.service.create(model)
-      .subscribe((item: IGlossaryModel) => {
-        this.glossaryActions.create(item);
-        this.toastrService.success(this.toastrSuccessMessageText, null, { closeButton: true });
-        this.modalActions.hide();
-      }, () => {
-        this.toastrService.error(this.toastrErrorMessageText, null, { closeButton: true });
-        this.modalActions.hide();
-      });
+    return this.service.create(model)
+      .pipe(
+        tap((item: IGlossaryModel) => this.glossaryActions.create(item))
+      );
   }
 
   private createForm(): any {

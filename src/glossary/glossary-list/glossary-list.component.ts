@@ -72,7 +72,6 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.searchForm = this.fb.group({
       searchCriteria: ''
     });
-
     this.searchCriteriaControl = this.searchForm.get('searchCriteria');
 
     this.searchCriteriaControl.valueChanges

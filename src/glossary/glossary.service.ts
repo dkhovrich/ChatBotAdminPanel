@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { BaseHttpService } from '../services/base-http.service';
+import { IPagination } from '../pagination/pagination.models';
 import { IGlossaryModel } from './glossary.models';
 import { IBaseRequest } from '../models/request';
 
@@ -15,10 +16,10 @@ export class GlossaryService extends BaseHttpService {
     super(http);
   }
 
-  get(data: IBaseRequest): Observable<IGlossaryModel[]> {
-    return this.http.get<IGlossaryModel[]>(this.url, { params: data.toHttpParams() })
+  get(data: IBaseRequest): Observable<IPagination<IGlossaryModel>> {
+    return this.http.get<IPagination<IGlossaryModel>>(this.url, { params: data.toHttpParams() })
       .pipe(
-        catchError(this.handleError(this.url, []))
+        catchError(this.handleError(this.url, null))
       );
   }
 

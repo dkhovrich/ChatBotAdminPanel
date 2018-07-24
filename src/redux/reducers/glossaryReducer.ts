@@ -1,13 +1,11 @@
 import { Reducer } from 'redux';
 import { FluxStandardAction } from 'flux-standard-action';
 import { GlossaryActions } from '../../glossary/glossary.actions';
+import { IPagination } from '../../pagination/pagination.models';
 import { IGlossaryModel } from '../../glossary/glossary.models';
 
 export interface IGlossary {
-  items?: IGlossaryModel[];
-  pageNumber?: number;
-  pageSize?: number;
-  total?: number;
+  data: IPagination<IGlossaryModel>;
 }
 
 const updateGlossary = (items: IGlossaryModel[], glossary: IGlossaryModel) => {
@@ -22,31 +20,28 @@ export const glossaryReducer: Reducer<IGlossary> =
     switch (action.type) {
       case GlossaryActions.LOAD: {
         const payload = action.payload as IGlossary;
-
-        return {
-          ...state,
-          items: payload.items,
-          pageNumber: payload.pageNumber,
-          pageSize: payload.pageSize,
-          total: payload.total
-        };
+        return { ...state, data: payload.data };
       }
       case GlossaryActions.CREATE: {
         const item = action.payload as IGlossaryModel;
-        const items: IGlossaryModel[] = [item, ...state.items];
-        return { ...state, items };
+        const data: IPagination<IGlossaryModel> = { ...state.data };
+        data.content = [...data.content, item];
+
+        return { ...state, data };
       }
       case GlossaryActions.UPDATE: {
         const item = action.payload as IGlossaryModel;
-        const items: IGlossaryModel[] = updateGlossary(state.items, item);
+        const data: IPagination<IGlossaryModel> = { ...state.data };
+        data.content = updateGlossary(data.content, item);
 
-        return { ...state, items };
+        return { ...state, data };
       }
       case GlossaryActions.REMOVE: {
         const item = action.payload as IGlossaryModel;
-        const items: IGlossaryModel[] = state.items.filter(i => i.id !== item.id);
+        const data: IPagination<IGlossaryModel> = { ...state.data };
+        data.content = data.content.filter(i => i.id !== item.id);
 
-        return { ...state, items };
+        return { ...state, data };
       }
       default: return state;
     }

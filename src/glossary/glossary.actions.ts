@@ -19,13 +19,8 @@ export class GlossaryActions extends BaseActionService {
     super();
   }
 
-  save(data: IPagination<IGlossaryModel>): void {
-    const action = this.createAction<IGlossary>(GlossaryActions.LOAD, {
-      items: data.content,
-      pageNumber: data.pageNumber,
-      pageSize: data.pageSize,
-      total: data.total
-    });
+  load(data: IPagination<IGlossaryModel>): void {
+    const action = this.createAction<IGlossary>(GlossaryActions.LOAD, { data });
     this.ngRedux.dispatch(action);
   }
 

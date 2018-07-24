@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let glossary of glossaries">
+    <tr *ngFor="let glossary of data.content">
       <td class="align-middle">
         <span *ngIf="glossary.title.rus">{{ glossary.title.rus }}</span>
       </td>
@@ -51,4 +51,4 @@
     </tr>
   </tbody>
 </table>
-<app-pagination [data]="page" (pageNumberChanged)="onPageNumberChanged($event)"></app-pagination>
+<app-pagination [data]="data" (pageNumberChanged)="onPageNumberChanged($event)"></app-pagination>

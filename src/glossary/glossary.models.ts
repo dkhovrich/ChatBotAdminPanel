@@ -1,3 +1,5 @@
+import { BaseRequest } from '../models/request';
+
 export interface IGlossaryTitleModel {
   rus: string;
   eng: string;
@@ -12,3 +14,5 @@ export interface IGlossaryModel {
 export class GlossaryTitleModel implements IGlossaryTitleModel {
   constructor(public rus: string, public eng: string) { }
 }
+
+export class GlossaryRequest extends BaseRequest { }

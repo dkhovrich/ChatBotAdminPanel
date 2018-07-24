@@ -74,8 +74,13 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
     this.loadData();
   }
 
-  private loadData(): void {
-    const request = new GlossaryRequest(this.searchCriteriaControl.value, this.data.pageNumber, this.data.pageSize);
+  private loadData(isPagination: boolean = true): void {
+    const request = new GlossaryRequest(this.searchCriteriaControl.value);
+    if (isPagination) {
+      request.pageNumber = this.data.pageNumber;
+      request.pageSize = this.data.pageSize;
+    }
+
     this.glossaryService.get(request).subscribe(data => this.glossaryActions.load(data));
   }
 
@@ -87,6 +92,6 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
     this.searchCriteriaControl.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(this.loadData.bind(this));
+      .subscribe(() => this.loadData(false));
   }
 }

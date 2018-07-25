@@ -70,18 +70,8 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
   }
 
   onPageNumberChanged(pageNumber: number) {
-    this.data.pageNumber = pageNumber;
-    this.loadData();
-  }
-
-  private loadData(isPagination: boolean = true): void {
-    const request = new GlossaryRequest(this.searchCriteriaControl.value);
-    if (isPagination) {
-      request.pageNumber = this.data.pageNumber;
-      request.pageSize = this.data.pageSize;
-    }
-
-    this.glossaryService.get(request).subscribe(data => this.glossaryActions.load(data));
+    const request = new GlossaryRequest(this.searchCriteriaControl.value, pageNumber, this.data.pageSize);
+    this.glossaryService.get(request).subscribe((data: IPagination<IGlossaryModel>) => this.glossaryActions.load(data));
   }
 
   private createSearchForm(): void {
@@ -92,6 +82,9 @@ export class GlossaryListComponent extends BaseSubscriptionComponent implements 
 
     this.searchCriteriaControl.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(() => this.loadData(false));
+      .subscribe((value: string) => {
+        const request = new GlossaryRequest(value);
+        this.glossaryService.get(request).subscribe((data: IPagination<IGlossaryModel>) => this.glossaryActions.load(data));
+      });
   }
 }
